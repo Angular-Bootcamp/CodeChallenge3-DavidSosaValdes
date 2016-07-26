@@ -2,6 +2,11 @@ var gulp = require('gulp');
 
 // Bower Tasks
 gulp.task('bower-post-install',function(){
+    // Stylesheets
+    gulp.src([
+      'bower_components/font-awesome/css/font-awesome.min.css'
+    ])
+    .pipe(gulp.dest('app/css'));
   	// Less
   	gulp.src('bower_components/bootstrap/less/**').pipe(gulp.dest('app/less/bootstrap'));
   	// Fonts
