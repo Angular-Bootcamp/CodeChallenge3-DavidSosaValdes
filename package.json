@@ -1,0 +1,10 @@
+{
+  "name": "codechallenge3",
+  "version": "1.0.0",
+  "description": "",
+  "author": "David Sosa Valdes",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
