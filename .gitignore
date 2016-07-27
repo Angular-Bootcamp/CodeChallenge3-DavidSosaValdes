@@ -1,4 +1,9 @@
 .DS_Store
 /bower_components/
 /node_modules/
-/app/**
+/app/css/**
+/app/fonts/**
+/app/js/**
+/app/less/**
+!/app/modules/
+!/app/css/appPokedex.min.css
