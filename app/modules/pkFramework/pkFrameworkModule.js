@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('pkFramework', []);
+angular.module('pkFramework', ['pkMenu']);

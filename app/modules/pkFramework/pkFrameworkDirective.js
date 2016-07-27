@@ -3,7 +3,9 @@
 angular.module('pkFramework').directive('pkFramework', function(){
 	return {
 		transclude: true,
-		scope: {},
+		scope: {
+			title: '@'
+		},
 		controller: 'pkFrameworkController',
 		templateUrl: 'modules/pkFramework/pkFrameworkTemplate.html' 
 	};

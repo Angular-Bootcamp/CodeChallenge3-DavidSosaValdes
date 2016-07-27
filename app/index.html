@@ -1,18 +1,30 @@
 <!DOCTYPE html>
-<html ng-app="appPokedex">
+<html lang="en" ng-app="appPokedex">
 	<head>
+	    <meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="./css/appPokedex.min.css">
 	</head>
-	<body class="container-fluid">
-		<pk-framework></pk-framework>
+	<body>
+		<pk-framework title="Pokedex">
+			<pk-menu>
+				<pk-menu-item label="Some" active="true" url="#"></pk-menu-item>
+				<pk-menu-item label="Some" url="#"></pk-menu-item>
+			</pk-menu>
+		</pk-framework>
 		<script type="text/javascript" src="./js/jquery.min.js"></script>
 		<script type="text/javascript" src="./js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="./js/angular.min.js"></script>
 		<!-- Angular Modules -->
+		<script type="text/javascript" src="./modules/pkMenu/pkMenuModule.js"></script>
+		<script type="text/javascript" src="./modules/pkMenu/pkMenuController.js"></script>
+		<script type="text/javascript" src="./modules/pkMenu/pkMenuDirective.js"></script>
+		<script type="text/javascript" src="./modules/pkMenu/pkMenuItemDirective.js"></script>	
 		<script type="text/javascript" src="./modules/pkFramework/pkFrameworkModule.js"></script>
 		<script type="text/javascript" src="./modules/pkFramework/pkFrameworkController.js"></script>
-		<script type="text/javascript" src="./modules/pkFramework/pkFrameworkDirective.js"></script>
+		<script type="text/javascript" src="./modules/pkFramework/pkFrameworkDirective.js"></script>	
 		<script type="text/javascript" src="./modules/appPokedex.js"></script>
 	</body>
 </html>
