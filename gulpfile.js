@@ -28,13 +28,15 @@ gulp.task('bower-post-install', function(){
     	'bower_components/bootstrap/dist/js/bootstrap.min.js',
     	'bower_components/angular/angular.min.js',
     	'bower_components/angular-mocks/angular-mocks.js',
-    	'bower_components/jquery/dist/jquery.min.js'
+    	'bower_components/jquery/dist/jquery.min.js',
+      'bower_components/angular-route/angular-route.min.js',
+      //'bower_components/angular-animate/angular-animate.min.js'
     ])
     .pipe(gulp.dest('app/js'));
 });
 
 
-gulp.task('default', function() {
+gulp.task('default', ['bower-post-install'], function() {
   // place code for your default task here
-  gulp.start('bower-post-install');
+  gulp.start('less');
 });
