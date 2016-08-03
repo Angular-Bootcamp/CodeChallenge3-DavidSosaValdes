@@ -32,7 +32,7 @@ gulp.task('bower-post-install', function(){
       'bower_components/angular-route/angular-route.min.js',
       'bower_components/angular-animate/angular-animate.min.js'
     ])
-    .pipe(gulp.dest('app/js'));
+    .pipe(gulp.dest('app/js/plugins'));
 });
 
 
