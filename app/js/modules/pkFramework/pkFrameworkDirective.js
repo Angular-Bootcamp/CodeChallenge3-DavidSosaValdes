@@ -7,6 +7,6 @@ angular.module('pkFramework').directive('pkFramework', function(){
 			title: '@'
 		},
 		controller: 'pkFrameworkController',
-		templateUrl: 'modules/pkFramework/pkFrameworkTemplate.html' 
+		templateUrl: 'js/modules/pkFramework/pkFrameworkTemplate.html' 
 	};
 });

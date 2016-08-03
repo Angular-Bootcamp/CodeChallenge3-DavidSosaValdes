@@ -6,10 +6,10 @@ angular.module('pkMenu').directive('pkMenu', function() {
 		scope: {
 
 		},
-		templateUrl: 'modules/pkMenu/pkMenuTemplate.html',
+		templateUrl: 'js/modules/pkMenu/pkMenuTemplate.html',
 		controller: 'pkMenuController',
 		link: function(scope, el, attr) {
-			 
+
 		}
 	};
 });

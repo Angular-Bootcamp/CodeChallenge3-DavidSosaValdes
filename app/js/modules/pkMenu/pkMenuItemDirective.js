@@ -8,9 +8,9 @@ angular.module('pkMenu').directive('pkMenuItem', function() {
 			active: '=',
 			url: '@'
 		},
-		templateUrl: 'modules/pkMenu/pkMenuItemTemplate.html',
+		templateUrl: 'js/modules/pkMenu/pkMenuItemTemplate.html',
 		link: function(scope, el, attr, ctrl) {
-			 
+
 		}
 	};
 });
