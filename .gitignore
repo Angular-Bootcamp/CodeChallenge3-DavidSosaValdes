@@ -3,7 +3,3 @@
 /node_modules/
 /app/css/**
 /app/fonts/**
-/app/js/**
-/app/less/**
-!/app/modules/
-!/app/css/appPokedex.min.css
