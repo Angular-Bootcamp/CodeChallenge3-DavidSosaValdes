@@ -5,12 +5,15 @@ angular.module('pkMenu').directive('pkMenuItem', function() {
 		require: '^pkMenu',
 		scope: {
 			label: '@',
-			active: '=',
-			url: '@'
+			route: '@'
 		},
 		templateUrl: 'js/modules/pkMenu/pkMenuItemTemplate.html',
 		link: function(scope, el, attr, ctrl) {
-
+			$(el).click(function(){
+					scope.$apply(function(){
+						ctrl.setActiveElement(scope.label);
+					});
+			});
 		}
 	};
 });

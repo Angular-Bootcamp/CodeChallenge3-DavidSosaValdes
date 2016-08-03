@@ -3,6 +3,6 @@
 angular.module('appPokedex').directive('pkList', [function(){
 	return {
 		scope: {},
-		templateUrl: 'templates/pkList.html'
+		templateUrl: 'js/templates/pkList.html'
 	};
 }]);
