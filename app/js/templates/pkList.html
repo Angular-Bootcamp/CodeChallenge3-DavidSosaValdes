@@ -1,1 +1,14 @@
-<h2>PkList</h2>
+<div ng-repeat="pokemon in pokemons | orderBy:order" class="media pokemon">
+  <a href="">
+  <div class="media-left">
+      <img class="media-object" ng-src="{{pokemon.sprites.front_default}}">
+  </div>
+  <div class="media-body">
+    <span class="pokemon-number">#00{{pokemon.id}}</span>
+    <h4 class="media-heading">{{pokemon.name}}</h4>
+    <div class="pokemon-types">
+      <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.type.name}}"></span>
+    </div>
+  </div>
+</a>
+</div>

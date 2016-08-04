@@ -3,6 +3,10 @@
 angular.module('appPokedex').directive('pkBattleboxList', [function(){
 	return {
 		scope: {},
-		templateUrl: 'js/templates/pkBattleboxList.html'
+		controller: 'pkApiController',
+		templateUrl: 'js/templates/pkList.html',
+		link: function(scope, el, attr, ctrl){
+			scope.populate();
+		}
 	};
 }]);
