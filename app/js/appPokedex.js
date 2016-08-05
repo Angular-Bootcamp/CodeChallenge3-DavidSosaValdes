@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('appPokedex', ['ngRoute', 'pkFramework'])
+angular.module('appPokedex', ['ngRoute', 'ngTouch', 'ngAnimate', 'pkFramework'])
   .config(['$routeProvider', function($routeProvider){
     $routeProvider
       .when('/all',{
