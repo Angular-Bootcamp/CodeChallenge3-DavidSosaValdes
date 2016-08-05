@@ -1,12 +1,11 @@
 'use strict';
 
-angular.module('appPokedex').directive('pkBattleboxList', [function(){
+angular.module('appPokedex').directive('pkBattleboxList', [function($timeout){
 	return {
-		scope: {},
 		controller: 'pkApiController',
 		templateUrl: 'js/templates/pkList.html',
 		link: function(scope, el, attr, ctrl){
-			scope.populate();
+			scope.pkListInit();
 		}
 	};
 }]);

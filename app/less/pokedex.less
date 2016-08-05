@@ -3,12 +3,34 @@
 }
 
 .media {
+	margin-top: 5px;
 	&.pokemon {
 		a {
 			text-decoration: none;
 			color:inherit;
 		}
 	}
+	.action {
+		font-size: 25px;
+		text-decoration: none;
+		color: white;
+	}
+}
+
+.pokedex-title {
+	color: white;
+	font-size: 20px;
+	padding-right: 50px;
+	margin-top: 14px;
+	text-align: center;
+}
+
+.pokemon-actions {
+	margin-top: 5px;
+  min-height: 100px;
+  /* vertical-align: middle; */
+  padding: 25px;
+  text-align: center;
 }
 
 .media-body {
@@ -24,17 +46,17 @@
 	&:extend(.navbar-default all);
 	border-radius: 0px;
 	background-color: @pokedex-bg-color;
-	h1.navbar-text {
-		font-size: 22px;
-		text-align: center;
-		margin: 12px 0px;
-		padding-right: 35px;
-		color: white;
+	h2.navbar-text {
+		font-size: 15px;
+    text-align: center;
+    margin: 12px 0;
+    padding-right: 35px;
+    color: white;
+    padding-top: 5px;
 	}
 	.navbar-brand {
 		color: white;
-		width: 75%;
-    	text-align: center;
+    text-align: center;
 	}
 	.navbar-toggle {
 		&:hover {
@@ -171,18 +193,17 @@
 // Module Styles
 pk-menu-item {
 	position: relative;
-    display: block;
-
-    li {
-	    box-sizing: border-box;
-    	padding: 10px 15px;
-        &.active {
-    		background-color: @pokedex-hover-color;
-			color: white;
-    	}
-    	a {
-    		color: white;
-    		display: block;
-    	}
+  display: block;
+  li {
+    box-sizing: border-box;
+  	padding: 10px 15px;
+      &.active {
+  		background-color: @pokedex-hover-color;
+		color: white;
+  	}
+  	a {
+  		color: white;
+  		display: block;
     }
+  }
 }
