@@ -1,4 +1,15 @@
-<div ng-repeat="pokemon in pokemons | orderBy:order" ng-show="(!showPokemon)">
+<div ng-show="(!showPokemon)">
+<div class="row pokedex-form-bar">
+  <div class="col-xs-10">
+    <div class="input-group">
+      <span class="input-group-addon pokedex-search" id="basic-addon1">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchEntry">
+    </div>
+  </div>
+</div>
+<div ng-repeat="pokemon in pokemons | filter:searchEntry | orderBy:order">
   <div class="pokemon-actions" ng-show="showActions" ng-swipe-left="showActions = false">
     <button class="btn btn-default btn-lg" ng-click="caughtPokemon(pokemon.id)">Caught</button>
     <button class="btn btn-default btn-lg" ng-click="setOnBattleBox(pokemon.id)">Battle Box</button>
@@ -9,7 +20,8 @@
         <img class="media-object" ng-src="{{pokemon.image}}">
       </div>
       <div class="media-body">
-        <span class="pokemon-number">#00{{pokemon.id}}</span>
+        <!-- TODO: create a filter with this funcion -->
+        <span class="pokemon-number">#{{("000" + pokemon.id).slice(-3)}}</span>
         <h4 class="media-heading">{{pokemon.name}}</h4>
         <div class="pokemon-types">
           <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.name}}"></span>
@@ -17,6 +29,7 @@
       </div>
     </a>
   </div>
+</div>
 </div>
 <div ng-show="(showPokemon)">
   <nav class="navbar navbar-pokedex">

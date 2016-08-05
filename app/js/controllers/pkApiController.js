@@ -5,7 +5,8 @@ angular.module('appPokedex').controller('pkApiController',
     $scope.pokemons = [];
 		$scope.showActions = false;
 		$scope.showPokemon = false;
-		$scope.pokemon = {};
+		$scope.selPokemon = {};
+		$scope.searchEntry;
 
 	  $scope.pkListInit = function(){
       return pkApiFactory.getAll().success(function(data){
@@ -14,7 +15,7 @@ angular.module('appPokedex').controller('pkApiController',
     };
 
 		$scope.showInfo = function(pokemon){
-			console.log('showing info');
+			console.log('showing info of pokemon: '+ pokemon.id);
 			$scope.showPokemon = true;
 			$scope.selPokemon = pokemon;
 		};
