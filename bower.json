@@ -5,7 +5,6 @@
     "David Sosa Valdes <david.sosa.valdes@gmail.com>"
   ],
   "description": "",
-  "main": "",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -13,7 +12,8 @@
     "font-awesome": "^4.6.3",
     "angular": "^1.5.8",
     "angular-route": "^1.5.8",
-    "angular-animate": "^1.5.8"
+    "angular-animate": "^1.5.8",
+    "angular-touch": "^1.5.8"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.8"

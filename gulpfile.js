@@ -30,7 +30,8 @@ gulp.task('bower-post-install', function(){
     	'bower_components/angular-mocks/angular-mocks.js',
     	'bower_components/jquery/dist/jquery.min.js',
       'bower_components/angular-route/angular-route.min.js',
-      'bower_components/angular-animate/angular-animate.min.js'
+      'bower_components/angular-animate/angular-animate.min.js',
+      'bower_components/angular-touch/angular-touch.min.js'
     ])
     .pipe(gulp.dest('app/js/plugins'));
 });
