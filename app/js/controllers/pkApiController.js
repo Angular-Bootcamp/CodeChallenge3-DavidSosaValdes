@@ -7,7 +7,7 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.showActions = false;
 		$scope.showPokemon = false;
 		$scope.selPokemon = {};
-		$scope.searchEntry;
+		$scope.searchEntry; //important: if declared null the filter on main list won't show
 		$scope.orderType = 'order';
 
 		$scope.orderList = function(){
