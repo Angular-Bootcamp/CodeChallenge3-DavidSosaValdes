@@ -2,7 +2,8 @@
 
 angular.module('appPokedex').controller('pkApiController',
 	['$scope', 'pkApiFactory', function($scope, pkApiFactory) {
-    $scope.pokemons = [];
+
+		$scope.pokemons = [];
 		$scope.showActions = false;
 		$scope.showPokemon = false;
 		$scope.selPokemon = {};
@@ -10,12 +11,12 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.orderType = 'order';
 
 		$scope.orderList = function(){
-			$scope.orderType = ($scope.orderType.indexOf('-') === -1)? '-'+$scope.orderType : $scope.orderType.replace('-','');
+			$scope.orderType = ($scope.orderType.indexOf('-') === -1)? '-' + $scope.orderType : $scope.orderType.replace('-','');
 			console.log('reorder the list to: '+$scope.orderType);
 		};
 
-	  $scope.pkListInit = function(){
-      return pkApiFactory.getAll().success(function(data){
+	  $scope.pkListInit = function(type){
+      return pkApiFactory.getAll(type).success(function(data){
 				return $scope.pokemons = data;
 			});
     };

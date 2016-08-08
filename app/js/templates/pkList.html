@@ -1,6 +1,6 @@
 <div class="container-fluid" ng-show="(!showPokemon)">
 <div class="row pokedex-form-bar">
-  <div class="col-xs-10">
+  <div class="col-xs-11">
     <div class="input-group">
       <span class="input-group-addon pokedex-search" id="basic-addon1">
         <i class="fa fa-search" aria-hidden="true"></i>
@@ -8,7 +8,7 @@
       <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchEntry">
     </div>
   </div>
-  <div class="col-xs-2 text-center">
+  <div class="col-xs-1 pokemon-order-action" ng-class="{active: (orderType == '-order')}">
     <img class="reorder-list" ng-click="orderList()" src="./img/filter-results-button.png">
   </div>
 </div>
