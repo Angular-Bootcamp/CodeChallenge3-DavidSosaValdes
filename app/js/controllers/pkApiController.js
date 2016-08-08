@@ -7,6 +7,12 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.showPokemon = false;
 		$scope.selPokemon = {};
 		$scope.searchEntry;
+		$scope.orderType = 'order';
+
+		$scope.orderList = function(){
+			$scope.orderType = ($scope.orderType.indexOf('-') === -1)? '-'+$scope.orderType : $scope.orderType.replace('-','');
+			console.log('reorder the list to: '+$scope.orderType);
+		};
 
 	  $scope.pkListInit = function(){
       return pkApiFactory.getAll().success(function(data){
