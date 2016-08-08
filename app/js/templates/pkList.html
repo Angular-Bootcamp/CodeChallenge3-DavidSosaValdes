@@ -56,7 +56,7 @@
  				<div class="pokemon-name col-xs-8">
  					<div class="row vertical-align">
  						<div class="col-xs-8">
- 							<h2>#{{("000" + selPokemon.id).slice(-3)}} {{selPokemon.name}}</h2>
+ 							<h2>#{{("000" + selPokemon.id).slice(-3)}} <span id="selected-pokemon-name">{{selPokemon.name}}</span></h2>
  						</div>
  						<div class="col-xs-4 icons">
  							<img ng-click="setOnBattleBox(selPokemon.id)" src="img/empty-plate.png">
