@@ -1,9 +1,41 @@
+.input-group-addon {
+	&.pokedex-search {
+		padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #949494;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+	}
+}
+
+.pokedex-form-bar {
+	padding-top: 10px;
+	padding-bottom: 0px;
+}
+
+.pokemon-order-action {
+	padding-left: 0px;
+	padding-top: 5px;
+	&.active {
+		img.reorder-list {
+			-webkit-transform: rotate(180deg);
+			-moz-transform: rotate(180deg);
+			-o-transform: rotate(180deg);
+			-ms-transform: rotate(180deg);
+		}
+	}
+}
+
 .navbar {
 	margin-bottom: 0px;
 }
 
 .media {
-	margin-top: 5px;
+	margin-top: 0px;
 	&.pokemon {
 		a {
 			text-decoration: none;
@@ -43,6 +75,7 @@
 }
 
 .navbar-pokedex {
+	&.description {}
 	&:extend(.navbar-default all);
 	border-radius: 0px;
 	background-color: @pokedex-bg-color;

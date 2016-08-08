@@ -12,6 +12,7 @@ angular.module('pkMenu').directive('pkMenuItem', function() {
 			$(el).click(function(){
 					scope.$apply(function(){
 						ctrl.setActiveElement(scope.label);
+						$('.navbar-toggle').click();
 					});
 			});
 		}

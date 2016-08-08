@@ -1,4 +1,18 @@
-<div ng-repeat="pokemon in pokemons | orderBy:order" ng-show="(!showPokemon)">
+<div class="container-fluid" ng-show="(!showPokemon)">
+<div class="row pokedex-form-bar">
+  <div class="col-xs-11">
+    <div class="input-group">
+      <span class="input-group-addon pokedex-search" id="basic-addon1">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchEntry">
+    </div>
+  </div>
+  <div class="col-xs-1 pokemon-order-action" ng-class="{active: (orderType == '-order')}">
+    <img class="reorder-list" ng-click="orderList()" src="./img/filter-results-button.png">
+  </div>
+</div>
+<div ng-repeat="pokemon in pokemons | filter:searchEntry | orderBy:orderType">
   <div class="pokemon-actions" ng-show="showActions" ng-swipe-left="showActions = false">
     <button class="btn btn-default btn-lg" ng-click="caughtPokemon(pokemon.id)">Caught</button>
     <button class="btn btn-default btn-lg" ng-click="setOnBattleBox(pokemon.id)">Battle Box</button>
@@ -9,7 +23,8 @@
         <img class="media-object" ng-src="{{pokemon.image}}">
       </div>
       <div class="media-body">
-        <span class="pokemon-number">#00{{pokemon.id}}</span>
+        <!-- TODO: create a filter with this funcion -->
+        <span class="pokemon-number">#{{("000" + pokemon.id).slice(-3)}}</span>
         <h4 class="media-heading">{{pokemon.name}}</h4>
         <div class="pokemon-types">
           <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.name}}"></span>
@@ -18,8 +33,9 @@
     </a>
   </div>
 </div>
+</div>
 <div ng-show="(showPokemon)">
-  <nav class="navbar navbar-pokedex">
+  <nav class="navbar navbar-pokedex description">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" ng-click="hideInfo()">
