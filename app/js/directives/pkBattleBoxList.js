@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('appPokedex').directive('pkBattleboxList', [function($timeout){
+angular.module('appPokedex').directive('pkBattleboxList', [function(){
 	return {
 		controller: 'pkApiController',
 		templateUrl: 'js/templates/pkList.html',
