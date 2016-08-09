@@ -31,7 +31,9 @@ gulp.task('bower-post-install', function(){
     	'bower_components/jquery/dist/jquery.min.js',
       'bower_components/angular-route/angular-route.min.js',
       'bower_components/angular-animate/angular-animate.min.js',
-      'bower_components/angular-touch/angular-touch.min.js'
+      'bower_components/angular-touch/angular-touch.min.js',
+      'bower_components/pouchdb/dist/pouchdb.min.js',
+      'bower_components/pouch-mirror/dist/pouch-mirror.min.js'
     ])
     .pipe(gulp.dest('app/js/plugins'));
 });
