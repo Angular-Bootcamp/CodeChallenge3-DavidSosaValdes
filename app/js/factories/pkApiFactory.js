@@ -1,24 +1,28 @@
 'use strict';
 
-angular.module('appPokedex').factory('pkApiFactory', function($http){
-  // Convert an image on base64 to store as a string on database
-  var convertImage = function(url, callback){
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
-      var reader  = new FileReader();
-      reader.onloadend = function () {
-        callback(reader.result);
-      }
-      reader.readAsDataURL(xhr.response);
+// Convert an image on base64 to store as a string on database
+function convertImage(url, callback){
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function() {
+    var reader  = new FileReader();
+    reader.onloadend = function () {
+      callback(reader.result);
     };
-    xhr.open('GET', '//cors-anywhere.herokuapp.com/'+url);
-    xhr.send();
+    reader.readAsDataURL(xhr.response);
   };
+  xhr.open('GET', '//cors-anywhere.herokuapp.com/'+url);
+  xhr.send();
+}
+
+angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
+  var DATABASE_URL = "http://127.0.0.1:5984/pokedex";
   return {
-    url: '../data/pokedex-full.json',
-    getAll: function(type){
-      return $http.get((this.url));
+    get: function(id){
+      return $http.get((DATABASE_URL+'/'+id));
+    },
+    getAll: function(){
+      return $http.get((DATABASE_URL+'/_all_docs'));
     },
     populateDB: function(min, max) {
       var json = [];
@@ -51,7 +55,7 @@ angular.module('appPokedex').factory('pkApiFactory', function($http){
                       var evolutions = new Promise(function(resolve, reject) {
                         for (var evolution in data.chain) {
                           var _cur_evolution = null;
-                          while (_cur_evolution = evolution.evolves_to) {
+                          while ((_cur_evolution = evolution.evolves_to)) {
                               $http.get(_cur_evolution.species.url)
                               .success(function(response){
                                 pokemon.evolutions.push({
@@ -60,7 +64,7 @@ angular.module('appPokedex').factory('pkApiFactory', function($http){
                                 });
                               })
                               .error(function(response, status){
-                                console.error('Evolution Chain error', status, response);
+                                $log.error('Evolution Chain error', status, response);
                               });
                               evolution = _cur_evolution;
                           }
@@ -68,24 +72,23 @@ angular.module('appPokedex').factory('pkApiFactory', function($http){
                       });
                       evolutions.then(function(){
                         json.push(pokemon);
-                        (json.length >= max) && console.log(JSON.stringify(json));
-                        console.log('Success API request of pokemon: '+ pokemon.name);
+                        (json.length >= max) && $log.info(JSON.stringify(json));
+                        $log.info('Success API request of pokemon: '+ pokemon.name);
                       });
                     })
                     .error(function(response, status){
-                      console.error('Evolutions error', status, response);
+                      $log.error('Evolutions error', status, response);
                     });
                 })
                 .error(function(response, status){
-                  console.error('Locations error', status, response);
+                  $log.error('Locations error', status, response);
                 });
             });
         })
         .error(function(data, status){
-          console.error('Repos error', status, data);
+          $log.error('Repos error', status, data);
         });
       }
-      return json;
     }
   };
 });

@@ -18,16 +18,30 @@
     <button class="btn btn-default btn-lg" ng-click="setOnBattleBox(pokemon._id)">Battle Box</button>
   </div>
   <div class="media pokemon" ng-show="(!showActions)" ng-swipe-right="showActions = true">
-    <a ng-click="showInfo(pokemon)">
+    <a ng-click="showInfo(pokemon._id)">
       <div class="media-left">
         <img class="media-object" ng-src="{{pokemon.image}}">
       </div>
       <div class="media-body">
-        <!-- TODO: create a filter with this funcion -->
-        <span class="pokemon-number">#{{("000" + pokemon._id).slice(-3)}}</span>
-        <h4 class="media-heading">{{pokemon.name}}</h4>
-        <div class="pokemon-types">
-          <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.type.name}}"></span>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="row">
+            <div class="col-xs-8">
+              <h4 class="media-heading">{{pokemon.name}}</h4>
+              <div class="pokemon-types">
+                <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.type.name}}"></span>
+              </div>
+            </div>
+            <div class="col-xs-4 text-right">
+              <!-- TODO: create a filter with this funcion -->
+              <span>#{{("000" + pokemon._id).slice(-3)}}</span>
+              <div>
+                <img src="img/star.png">
+                <img src="img/empty-plate.png">
+              </div>
+            </div>
+          </div>
+          </div>
         </div>
       </div>
     </a>
