@@ -17,9 +17,17 @@ function convertImage(url, callback){
 
 angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
   var DATABASE_URL = "http://127.0.0.1:5984/pokedex";
+  var LOCALDB = new PouchDB('pokedexDB');
+  var MIRRORDB = new PouchMirror(LOCALDB, DATABASE_URL);
+  // db.allDocs({include_docs: true, descending: true}, function(err, doc) {
+  //   redrawTodosUI(doc.rows);
+  // });
   return {
+    replicator: function(){
+      return MIRRORDB.start({retry: true});
+    },
     get: function(id){
-      return $http.get((DATABASE_URL+'/'+id));
+      return LOCALDB.get(id);
     },
     getAll: function(){
       return $http.get((DATABASE_URL+'/_all_docs'));

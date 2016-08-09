@@ -22,28 +22,40 @@ angular.module('appPokedex').controller('pkApiController',
 					pkQuery = pkApiFactory.getAll;
 					break;
 			}
-      return pkQuery().success(function(data){
-				for (var i = 0; i < data.rows.length; i++) {
-					pkApiFactory.get(data.rows[i].id).success(function(pokemon){
-						$scope.pokemons.push({
-							order: pokemon.order,
-							_id: pokemon._id,
-							name: pokemon.name,
-							image: pokemon.image,
-							types: pokemon.types
+			pkApiFactory.replicator().on('up-to-date', function(data) {
+		    $log.info('Initial replication of ' + data.db + ' complete!');
+				// TODO: Change the success promise by then using PouchDB
+				pkQuery().success(function(data){
+					for (var i = 0; i < data.rows.length; i++) {
+						pkApiFactory.get(data.rows[i].id)
+						.then(function (pokemon){
+							$scope.$apply(function(){
+								$scope.pokemons.push({
+										order: pokemon.order,
+										_id: pokemon._id,
+										name: pokemon.name,
+										image: pokemon.image,
+										types: pokemon.types
+								});
+							});
+						}).catch(function (err) {
+  						console.log(err);
 						});
-					});
-				}
-			});
+					}
+				});
+		  });
     };
 
 		$scope.pkGet = function(id){
 			pkApiFactory.get(id)
-				.success(function(data){
-					$scope.selPokemon = data;
+				.then(function(data){
+					$scope.$apply(function(){
+							$scope.selPokemon = data;
+					});
 				})
-				.error(function(){
+				.catch(function(err){
 					$log.error('error getting pokemon: '+id);
+					$log.error(err);
 				});
 		};
 
