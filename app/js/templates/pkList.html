@@ -2,7 +2,7 @@
 <div class="row pokedex-form-bar">
   <div class="col-xs-11">
     <div class="input-group">
-      <span class="input-group-addon pokedex-search" id="basic-addon1">
+      <span id="basic-addon1" class="input-group-addon pokedex-search">
         <i class="fa fa-search" aria-hidden="true"></i>
       </span>
       <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchEntry">
@@ -14,8 +14,8 @@
 </div>
 <div ng-repeat="pokemon in pokemons | filter:searchEntry | orderBy:orderType">
   <div class="pokemon-actions" ng-show="showActions" ng-swipe-left="showActions = false">
-    <button class="btn btn-default btn-lg" ng-click="caughtPokemon(pokemon.id)">Caught</button>
-    <button class="btn btn-default btn-lg" ng-click="setOnBattleBox(pokemon.id)">Battle Box</button>
+    <button class="btn btn-default btn-lg" ng-click="caughtPokemon(pokemon._id)">Caught</button>
+    <button class="btn btn-default btn-lg" ng-click="setOnBattleBox(pokemon._id)">Battle Box</button>
   </div>
   <div class="media pokemon" ng-show="(!showActions)" ng-swipe-right="showActions = true">
     <a ng-click="showInfo(pokemon)">
@@ -24,10 +24,10 @@
       </div>
       <div class="media-body">
         <!-- TODO: create a filter with this funcion -->
-        <span class="pokemon-number">#{{("000" + pokemon.id).slice(-3)}}</span>
+        <span class="pokemon-number">#{{("000" + pokemon._id).slice(-3)}}</span>
         <h4 class="media-heading">{{pokemon.name}}</h4>
         <div class="pokemon-types">
-          <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.name}}"></span>
+          <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.type.name}}"></span>
         </div>
       </div>
     </a>
@@ -56,11 +56,11 @@
  				<div class="pokemon-name col-xs-8">
  					<div class="row vertical-align">
  						<div class="col-xs-8">
- 							<h2>#{{("000" + selPokemon.id).slice(-3)}} <span id="selected-pokemon-name">{{selPokemon.name}}</span></h2>
+ 							<h2>#{{("000" + selPokemon._id).slice(-3)}} <span id="selected-pokemon-name">{{selPokemon.name}}</span></h2>
  						</div>
  						<div class="col-xs-4 icons">
- 							<img ng-click="setOnBattleBox(selPokemon.id)" src="img/empty-plate.png">
- 							<img ng-click="caughtPokemon(selPokemon.id)" src="img/star.png">
+ 							<img ng-click="setOnBattleBox(selPokemon._id)" src="img/empty-plate.png">
+ 							<img ng-click="caughtPokemon(selPokemon._id)" src="img/star.png">
  						</div>
  					</div>
  				</div>
@@ -73,7 +73,7 @@
  					</ul>
  					<p>{{selPokemon.description}}</p>
  					<div class="pokemon-types">
- 						<span ng-repeat="type in selPokemon.types" class="pokemon-type {{type.name}}"></span>
+ 						<span ng-repeat="type in selPokemon.types" class="pokemon-type {{type.type.name}}"></span>
  					</div>
  				</div>
  			</div>
@@ -87,17 +87,20 @@
  									<td>Hidden Abilities</td>
  									<td>
  										<ul class="list-inline">
- 											<li ng-repeat="ability in selPokemon.abilities">{{ability.name}}</li>
+ 											<li ng-repeat="ability in selPokemon.abilities">{{ability.ability.name}}</li>
  										</ul>
  									</td>
  								</tr>
  								<tr>
  									<td>Location</td>
  									<td>
- 										<span ng-if="!!selPokemon.location_area_encounters">
+ 										<span ng-if="!!selPokemon.locations">
  											Starter pokemon on <b>{{selPokemon.region}} Region</b>
  										</span>
- 										<!-- toDO: iterate over location_area_enconters if not empty-->
+                    <!-- toDO: iterate over location_area_enconters if not empty-->
+                    <span ng-repeat="location in selPokemon.locations">
+                      {{location.location_area.name}}
+                    </span>
  									</td>
  								</tr>
  							</tbody>
@@ -115,7 +118,7 @@
  									<img class="img-responsive" alt="{{selPokemon.name}}" data-ng-src="{{evolution.image}}">
  								</td>
  								<td class="pokemon-evolution col-xs-8">
- 									<span class="pokemon-number">#{{("000" + evolution.id).slice(-3)}}</span>
+ 									<span class="pokemon-number">#{{("000" + evolution._id).slice(-3)}}</span>
  									<h4>{{evolution.name}}</h4>
  									<p>LV. {{evolution.minLevel}}</p>
  									<div class="pokemon-types">
