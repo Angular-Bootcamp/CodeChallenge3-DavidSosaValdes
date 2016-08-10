@@ -1,20 +1,5 @@
 'use strict';
 
-// Convert an image on base64 to store as a string on database
-function convertImage(url, callback){
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
-  xhr.onload = function() {
-    var reader  = new FileReader();
-    reader.onloadend = function () {
-      callback(reader.result);
-    };
-    reader.readAsDataURL(xhr.response);
-  };
-  xhr.open('GET', '//cors-anywhere.herokuapp.com/'+url);
-  xhr.send();
-}
-
 angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
   var API_URL = 'http://pokeapi.co';
   var DATABASE_URL = 'http://127.0.0.1:5984/pokedex';
@@ -92,3 +77,18 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
     }
   };
 });
+
+// Convert an image on base64 to store as a string on database
+function convertImage(url, callback){
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function() {
+    var reader  = new FileReader();
+    reader.onloadend = function () {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', '//cors-anywhere.herokuapp.com/'+url);
+  xhr.send();
+}

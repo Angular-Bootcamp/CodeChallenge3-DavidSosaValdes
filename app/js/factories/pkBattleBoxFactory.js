@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('appPokedex').factory('pkCaughtFactory', function($log, pouchDB){
-  var DB = pouchDB('pkCaughtDB');
+angular.module('appPokedex').factory('pkBattleBoxFactory', function($log, pouchDB){
+  var DB = pouchDB('pkBattleBoxDB');
   return {
     get: function(id){
       return DB.get(id);

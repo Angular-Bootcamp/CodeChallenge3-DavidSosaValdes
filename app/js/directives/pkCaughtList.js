@@ -5,6 +5,7 @@ angular.module('appPokedex').directive('pkCaughtList', [function(){
 		controller: 'pkApiController',
 		templateUrl: 'js/templates/pkList.html',
 		link: function(scope, el, attr, ctrl){
+			scope.pkCaughtListInit();
 		}
 	};
 }]);
