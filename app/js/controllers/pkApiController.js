@@ -9,7 +9,7 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 		$scope.orderType = 'order';
 
-	  $scope.pkListInit = function(type){
+	  $scope.pkSync = function(type){
 			var pkQuery = null;
 			switch (type) {
 				case 'caught':
@@ -22,38 +22,39 @@ angular.module('appPokedex').controller('pkApiController',
 					pkQuery = pkApiFactory.getAll;
 					break;
 			}
-			pkApiFactory.replicator().on('up-to-date', function(data) {
-		    $log.info('Initial replication of ' + data.db + ' complete!');
-				// TODO: Change the success promise by then using PouchDB
-				pkQuery().success(function(data){
-					for (var i = 0; i < data.rows.length; i++) {
-						pkApiFactory.get(data.rows[i].id)
-						.then(function (pokemon){
-							$scope.$apply(function(){
-								$scope.pokemons.push({
-										order: pokemon.order,
-										_id: pokemon._id,
-										name: pokemon.name,
-										image: pokemon.image,
-										types: pokemon.types
-								});
-							});
-						}).catch(function (err) {
-  						console.log(err);
-						});
-					}
-				});
+			return pkApiFactory.replicator(function() {
+				$scope.pkListInit(pkQuery);
 		  });
     };
 
+		$scope.pkListInit = function(pkQuery){
+			return pkQuery().then(function(data){
+				for (var i = 0; i < data.rows.length; i++) {
+					pkApiFactory.get(data.rows[i].id).then(function(pokemon){
+						$scope.$apply(function(){
+							$scope.pokemons.push({
+									order: pokemon.order,
+									_id: pokemon._id,
+									name: pokemon.name,
+									image: pokemon.image,
+									types: pokemon.types
+							});
+						});
+					}).catch(function (err){
+						$log.error(err);
+					});
+				}
+			}).catch(function (err) {
+				$log.error(err);
+			});
+		};
+
 		$scope.pkGet = function(id){
-			pkApiFactory.get(id)
-				.then(function(data){
+			pkApiFactory.get(id).then(function(data){
 					$scope.$apply(function(){
 							$scope.selPokemon = data;
 					});
-				})
-				.catch(function(err){
+				}).catch(function(err){
 					$log.error('error getting pokemon: '+id);
 					$log.error(err);
 				});

@@ -16,27 +16,30 @@ function convertImage(url, callback){
 }
 
 angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
-  var DATABASE_URL = "http://127.0.0.1:5984/pokedex";
+  var API_URL = 'http://pokeapi.co';
+  var DATABASE_URL = 'http://127.0.0.1:5984/pokedex';
   var LOCALDB = new PouchDB('pokedexDB');
   var MIRRORDB = new PouchMirror(LOCALDB, DATABASE_URL);
-  // db.allDocs({include_docs: true, descending: true}, function(err, doc) {
-  //   redrawTodosUI(doc.rows);
-  // });
   return {
-    replicator: function(){
-      return MIRRORDB.start({retry: true});
+    replicator: function(callback){
+      try {
+        return MIRRORDB.start({retry: true}).on('up-to-date', callback);
+      } catch(e){
+        //$log.warn(e);
+        return callback();
+      }
     },
     get: function(id){
       return LOCALDB.get(id);
     },
-    getAll: function(){
-      return $http.get((DATABASE_URL+'/_all_docs'));
+    getAll: function(callback){
+      return LOCALDB.allDocs({include_docs: false, descending: false});
     },
     populateDB: function(min, max) {
       var json = [];
       for (var i = min; i <= max; i++) {
         // Get pokemon basic information
-        $http.get('http://pokeapi.co/api/v2/pokemon/'+i)
+        $http.get((API_URL + '/api/v2/pokemon/'+i))
           .success(function(data){
             convertImage(data.sprites.front_default, function(base64Img){
               var pokemon = {
@@ -51,14 +54,13 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
                 height     : data.height,
                 region     : "Kanto",
                 evolutions : []
-                //locations  : []
               };
               // Get location area encounters
-              $http.get('http://pokeapi.co'+ data.location_area_encounters)
+              $http.get((API_URL + data.location_area_encounters))
                 .success(function(data){
                   pokemon.locations = data;
                   // Get evolutions
-                  $http.get('http://pokeapi.co/api/v2/evolution-chain/'+pokemon._id)
+                  $http.get((API_URL + '/v2/evolution-chain/' + pokemon._id))
                     .success(function(data){
                       var evolutions = new Promise(function(resolve, reject) {
                         for (var evolution in data.chain) {
