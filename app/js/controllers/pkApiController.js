@@ -9,7 +9,7 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 		$scope.orderType = 'order';
 
-		$scope.pushPokemon = function(pokemon){
+		$scope.pkListPushPokemon = function(pokemon){
 				$scope.pokemons.push({
 						order: pokemon.order,
 						_id: pokemon._id,
@@ -22,7 +22,7 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.pkListInit = function(){
 			return pkApiFactory.getAll().success(function(data){
 				for (var i = 0; i < data.rows.length; i++) {
-					pkApiFactory.get(data.rows[i].id).success($scope.pushPokemon);
+					pkApiFactory.get(data.rows[i].id).success($scope.pkListPushPokemon);
 				}
 			}).error(function (err) {
 				$log.error(err);
