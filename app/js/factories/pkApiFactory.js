@@ -18,22 +18,12 @@ function convertImage(url, callback){
 angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
   var API_URL = 'http://pokeapi.co';
   var DATABASE_URL = 'http://127.0.0.1:5984/pokedex';
-  var LOCALDB = new PouchDB('pokedexDB');
-  var MIRRORDB = new PouchMirror(LOCALDB, DATABASE_URL);
   return {
-    replicator: function(callback){
-      try {
-        return MIRRORDB.start({retry: true}).on('up-to-date', callback);
-      } catch(e){
-        //$log.warn(e);
-        return callback();
-      }
-    },
     get: function(id){
-      return LOCALDB.get(id);
+      return $http.get((DATABASE_URL+'/'+id));
     },
     getAll: function(callback){
-      return LOCALDB.allDocs({include_docs: false, descending: false});
+      return $http.get((DATABASE_URL+'/_all_docs'));
     },
     populateDB: function(min, max) {
       var json = [];

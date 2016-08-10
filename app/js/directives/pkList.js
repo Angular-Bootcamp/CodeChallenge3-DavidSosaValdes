@@ -5,7 +5,7 @@ angular.module('appPokedex').directive('pkList', [function(){
 		controller: 'pkApiController',
 		templateUrl: 'js/templates/pkList.html',
 		link: function(scope, el, attr, ctrl){
-			scope.pkSync('all');
+			scope.pkListInit();
 		}
 	};
 }]);

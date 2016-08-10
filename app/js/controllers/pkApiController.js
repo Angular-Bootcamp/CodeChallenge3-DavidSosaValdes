@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('appPokedex').controller('pkApiController',
-	['$scope', '$log', 'pkApiFactory', function($scope, $log, pkApiFactory) {
+	['$scope', '$log', 'pkApiFactory','pkCaughtFactory', function($scope, $log, pkApiFactory, pkCaughtFactory) {
 		$scope.pokemons = [];
 		$scope.showActions = false;
 		$scope.showPokemon = false;
@@ -9,52 +9,30 @@ angular.module('appPokedex').controller('pkApiController',
 		$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 		$scope.orderType = 'order';
 
-	  $scope.pkSync = function(type){
-			var pkQuery = null;
-			switch (type) {
-				case 'caught':
-					pkQuery = pkApiFactory.getAll;
-					break;
-				case 'battle-box':
-					pkQuery = pkApiFactory.getAll;
-					break;
-				default:
-					pkQuery = pkApiFactory.getAll;
-					break;
-			}
-			return pkApiFactory.replicator(function() {
-				$scope.pkListInit(pkQuery);
-		  });
-    };
+		$scope.pushPokemon = function(pokemon){
+				$scope.pokemons.push({
+						order: pokemon.order,
+						_id: pokemon._id,
+						name: pokemon.name,
+						image: pokemon.image,
+						types: pokemon.types
+				});
+		};
 
-		$scope.pkListInit = function(pkQuery){
-			return pkQuery().then(function(data){
+		$scope.pkListInit = function(){
+			return pkApiFactory.getAll().success(function(data){
 				for (var i = 0; i < data.rows.length; i++) {
-					pkApiFactory.get(data.rows[i].id).then(function(pokemon){
-						$scope.$apply(function(){
-							$scope.pokemons.push({
-									order: pokemon.order,
-									_id: pokemon._id,
-									name: pokemon.name,
-									image: pokemon.image,
-									types: pokemon.types
-							});
-						});
-					}).catch(function (err){
-						$log.error(err);
-					});
+					pkApiFactory.get(data.rows[i].id).success($scope.pushPokemon);
 				}
-			}).catch(function (err) {
+			}).error(function (err) {
 				$log.error(err);
 			});
 		};
 
 		$scope.pkGet = function(id){
-			pkApiFactory.get(id).then(function(data){
-					$scope.$apply(function(){
-							$scope.selPokemon = data;
-					});
-				}).catch(function(err){
+			pkApiFactory.get(id).success(function(data){
+					$scope.selPokemon = data;
+				}).error(function(err){
 					$log.error('error getting pokemon: '+id);
 					$log.error(err);
 				});
@@ -75,7 +53,22 @@ angular.module('appPokedex').controller('pkApiController',
 		};
 
 		$scope.caughtPokemon = function(id){
-			$log.info('caught pokemon: '+ id + '!');
+			pkApiFactory.get(id).success(function(pokemon){
+				return pkCaughtFactory.get(id)
+					// TODO: fix the update DB method because it duplicate entries
+					// .then(function(doc){
+					// 	pokemon._rev = doc._rev;
+	  			// 	pkCaughtFactory.put(pokemon, doc._rev).then(function(response){
+					// 		$log.info('update caught pokemon: '+ id + '!');
+					// 	});
+					// })
+					.catch(function(err){
+						delete pokemon._rev;
+						pkCaughtFactory.put(pokemon).then(function(){
+								$log.info('caught pokemon: '+ id + '!');
+						});
+					});
+			});
 		};
 
 		$scope.setOnBattleBox = function(id){
