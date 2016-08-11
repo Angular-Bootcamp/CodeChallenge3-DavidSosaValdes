@@ -3,6 +3,7 @@
 angular.module('appPokedex').controller('pkApiController',
 	['$scope', '$log', '$rootScope','pkApiFactory','pkCaughtFactory', 'pkBattleBoxFactory', 'Webworker',
 		function($scope, $log, $rootScope, pkApiFactory, pkCaughtFactory, pkBattleBoxFactory, Webworker) {
+			$scope.pkType = 'all';
 			$scope.caughts = [];
 			$scope.battleBox = [];
 			$scope.pokemons = [];
@@ -11,6 +12,36 @@ angular.module('appPokedex').controller('pkApiController',
 			$scope.selPokemon = {};
 			$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 			$scope.orderType = 'order';
+
+			$scope.removeFromPokedex = function(id){
+				if ($scope.pkType !== 'all') {
+					var pokemons = [];
+					for (var i = 0; i < $scope.pokemons.length; i++){
+						if ($scope.pokemons[i]._id != id) {
+							pokemons.push($scope.pokemons[i]);
+						}
+					}
+					$scope.pokemons = pokemons;
+				}
+			};
+
+			$scope.removeFromLocalCaught = function(pokemonID){
+				return pkCaughtFactory.get(pokemonID).then(function(pokemon){
+					return pkCaughtFactory.delete(pokemon).then(function(){
+						delete $scope.caughts[pokemonID];
+						$scope.removeFromPokedex(pokemonID);
+					});
+				});
+			};
+
+			$scope.removeFromLocalBattleBox = function(pokemonID){
+				return pkBattleBoxFactory.get(pokemonID).then(function(pokemon){
+					return pkBattleBoxFactory.delete(pokemon).then(function(){
+						delete $scope.battleBox[pokemonID];
+						$scope.removeFromPokedex(pokemonID);
+					});
+				});
+			};
 
 			$scope.setOnLocalCaught = function(pokemonID){
 				return pkCaughtFactory.get(pokemonID).then(function(){
@@ -92,6 +123,10 @@ angular.module('appPokedex').controller('pkApiController',
 			$scope.caughtPokemon = function(id){
 				return pkApiFactory.get(id).success(function(pokemon){
 					pkCaughtFactory.get(pokemon._id)
+					.then(function(){
+						$scope.removeFromLocalCaught(pokemon._id);
+						$log.info('delete pokemon: '+pokemon._id+' from the caught list!');
+					})
 					// TODO: fix the update DB method because it duplicates entries
 					// .then(function(doc){
 					// 	pokemon._rev = doc._rev;
@@ -110,8 +145,12 @@ angular.module('appPokedex').controller('pkApiController',
 			};
 
 			$scope.setOnBattleBox = function(id){
-				pkApiFactory.get(id).success(function(pokemon){
-					return pkBattleBoxFactory.get(id)
+				return pkApiFactory.get(id).success(function(pokemon){
+					pkBattleBoxFactory.get(pokemon._id)
+					.then(function(){
+						$scope.removeFromLocalBattleBox(pokemon._id);
+						$log.info('delete pokemon: '+pokemon._id+' from the battle-box list!');
+					})
 					// TODO: fix the update DB method because it duplicates entries
 					// .then(function(doc){
 					// 	pokemon._rev = doc._rev;

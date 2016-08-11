@@ -11,6 +11,9 @@ angular.module('appPokedex').factory('pkBattleBoxFactory', function($log, pouchD
     },
     put: function(data){
       return DB.put(data);
+    },
+    delete: function(id){
+      return DB.remove(id);
     }
   };
 });
