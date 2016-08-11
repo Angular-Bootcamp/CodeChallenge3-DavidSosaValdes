@@ -12,6 +12,39 @@
 	}
 }
 
+.battle-box-icon {
+	background-image: url('@{img-path}/empty-plate.png');
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	&.active {
+		background-image: url('@{img-path}/empty-plate-active.png');
+	}
+}
+.star-icon{
+	background-image: url('@{img-path}/star.png');
+  width: 16px;
+  height: 16px;
+	display: inline-block;
+	&.active {
+		background-image: url('@{img-path}/star-active.png');
+	}
+}
+
+.btn-pk-caught {
+	background-color: #E91E63;
+	color: white;
+	&:active {
+		&:extend(.btn-pk-caught);
+	}
+	&:hover {
+		&:extend(.btn-pk-caught);
+	}
+	&:focus {
+		&:extend(.btn-pk-caught);
+	}
+}
+
 .pokedex-container {
 	margin-top:50px;
 }

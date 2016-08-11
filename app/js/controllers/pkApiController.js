@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('appPokedex').controller('pkApiController',
-	['$scope', '$log', '$rootScope','pkApiFactory','pkCaughtFactory', 'pkBattleBoxFactory',
-		function($scope, $log, $rootScope, pkApiFactory, pkCaughtFactory, pkBattleBoxFactory) {
+	['$scope', '$log', '$rootScope','pkApiFactory','pkCaughtFactory', 'pkBattleBoxFactory', 'Webworker',
+		function($scope, $log, $rootScope, pkApiFactory, pkCaughtFactory, pkBattleBoxFactory, Webworker) {
+			$scope.caughts = [];
+			$scope.battleBox = [];
 			$scope.pokemons = [];
 			$scope.showActions = false;
 			$scope.showPokemon = false;
@@ -10,8 +12,20 @@ angular.module('appPokedex').controller('pkApiController',
 			$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 			$scope.orderType = 'order';
 
+			$scope.setOnLocalCaught = function(pokemonID){
+				return pkCaughtFactory.get(pokemonID).then(function(){
+					$scope.caughts[pokemonID] = true;
+				});
+			};
+
+			$scope.setOnLocalBattleBox = function(pokemonID){
+				return pkBattleBoxFactory.get(pokemonID).then(function(){
+					$scope.battleBox[pokemonID] = true;
+				});
+			};
+
 			$scope.pkListPushPokemon = function(pokemon){
-				$scope.pokemons.push({
+				return $scope.pokemons.push({
 						order: pokemon.order,
 						_id: pokemon._id,
 						name: pokemon.name,
@@ -24,6 +38,8 @@ angular.module('appPokedex').controller('pkApiController',
 				return pkApiFactory.getAll().success(function(data){
 					for (var i = 0; i < data.rows.length; i++) {
 						pkApiFactory.get(data.rows[i].id).success($scope.pkListPushPokemon);
+						$scope.setOnLocalCaught(data.rows[i].id);
+						$scope.setOnLocalBattleBox(data.rows[i].id);
 					}
 				}).error(function (err) {
 					$log.error(err);
@@ -34,6 +50,8 @@ angular.module('appPokedex').controller('pkApiController',
 				return pkCaughtFactory.getAll().then(function(result){
 					for (var i = 0; i < result.rows.length; i++) {
 						pkCaughtFactory.get(result.rows[i].id).then($scope.pkListPushPokemon);
+						$scope.setOnLocalCaught(result.rows[i].id);
+						$scope.setOnLocalBattleBox(result.rows[i].id);
 					}
 				});
 			};
@@ -42,6 +60,8 @@ angular.module('appPokedex').controller('pkApiController',
 				return pkBattleBoxFactory.getAll().then(function(result){
 					for (var i = 0; i < result.rows.length; i++) {
 						pkBattleBoxFactory.get(result.rows[i].id).then($scope.pkListPushPokemon);
+						$scope.setOnLocalCaught(result.rows[i].id);
+						$scope.setOnLocalBattleBox(result.rows[i].id);
 					}
 				});
 			};
@@ -71,7 +91,7 @@ angular.module('appPokedex').controller('pkApiController',
 
 			$scope.caughtPokemon = function(id){
 				return pkApiFactory.get(id).success(function(pokemon){
-					pkCaughtFactory.get(id)
+					pkCaughtFactory.get(pokemon._id)
 					// TODO: fix the update DB method because it duplicates entries
 					// .then(function(doc){
 					// 	pokemon._rev = doc._rev;
@@ -82,7 +102,8 @@ angular.module('appPokedex').controller('pkApiController',
 					.catch(function(err){
 						delete pokemon._rev;
 						pkCaughtFactory.put(pokemon).then(function(){
-								$log.info('caught pokemon: '+ id + '!');
+								$log.info('caught pokemon: '+ pokemon._id + '!');
+								$scope.setOnLocalCaught(pokemon._id);
 						});
 					});
 				});
@@ -102,6 +123,7 @@ angular.module('appPokedex').controller('pkApiController',
 						delete pokemon._rev;
 						pkBattleBoxFactory.put(pokemon).then(function(){
 							$log.info('set pokemon: '+ id + ' on battle box!');
+							$scope.setOnLocalBattleBox(pokemon._id);
 						});
 					});
 				});
