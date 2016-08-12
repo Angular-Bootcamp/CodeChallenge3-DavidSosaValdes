@@ -1,17 +1,17 @@
 exports.config = {
   framework: 'jasmine',
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  restartBrowserBetweenTests: false,
+  baseUrl: 'http://localhost:8080',
   specs: [
-    './UserStory1/mainMenu.spec.js',
-    './UserStory2/getPokedex.spec.js',
-    './UserStory2/descOrderPokedex.spec.js'
+    './**/*.spec.js',
   ],
+  suites: {
+      story1: './UserStory1/*.spec.js',
+      story2: './UserStory2/*.spec.js'
+  },
   capabilities: {
     'browserName': 'chrome',
     'binary': 'C:/Users/david.sosa.valdes/Downloads/chromedriver.exe',
-    shardTestFiles: true,
-    maxInstances: 3 // Running specs in parallel
   },
   onPrepare: function(){
     browser.driver.manage().window().setPosition(0,0);
