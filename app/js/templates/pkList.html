@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="col-xs-1 pokemon-order-action" ng-class="{active: (orderType == '-order')}">
-    <img class="reorder-list" ng-click="orderList()" src="./img/filter-results-button.png">
+    <img id="reorder-list" class="reorder-list" ng-click="orderList()" src="./img/filter-results-button.png">
   </div>
 </div>
 <div ng-repeat="pokemon in pokemons | filter:searchEntry | filter:{deleted:false} | orderBy:orderType">
