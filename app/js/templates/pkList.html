@@ -12,7 +12,7 @@
     <img class="reorder-list" ng-click="orderList()" src="./img/filter-results-button.png">
   </div>
 </div>
-<div ng-repeat="pokemon in pokemons | filter:searchEntry | orderBy:orderType">
+<div ng-repeat="pokemon in pokemons | filter:searchEntry | filter:{deleted:false} | orderBy:orderType">
   <div class="pokemon-actions" ng-show="showActions" ng-swipe-left="showActions = false">
     <button class="btn btn-default btn-lg" ng-class="{'btn-warning': battleBox[pokemon._id]}" ng-click="setOnBattleBox(pokemon._id)">Battle Box</button>
     <button class="btn btn-default btn-lg" ng-class="{'btn-pk-caught': caughts[pokemon._id]}" ng-click="caughtPokemon(pokemon._id)">Caught</button>
@@ -127,7 +127,7 @@
  					<div class="panel-heading">Evolutions</div>
  					<div class="table-responsive">
  						<table class="table evolution-table">
- 							<tr ng-repeat="evolution in selPokemon.evolutions">
+ 							<tr ng-repeat="evolution in selPokemon.evolutions" ng-click="showInfo(evolution._id)">
  								<td class="col-xs-4">
  									<img class="img-responsive" alt="{{selPokemon.name}}" data-ng-src="{{evolution.image}}">
  								</td>

@@ -3,7 +3,6 @@
 angular.module('appPokedex').controller('pkApiController',
 	['$scope', '$log', '$rootScope','pkApiFactory','pkCaughtFactory', 'pkBattleBoxFactory', 'Webworker',
 		function($scope, $log, $rootScope, pkApiFactory, pkCaughtFactory, pkBattleBoxFactory, Webworker) {
-			$scope.pkType = 'all';
 			$scope.caughts = [];
 			$scope.battleBox = [];
 			$scope.pokemons = [];
@@ -14,14 +13,10 @@ angular.module('appPokedex').controller('pkApiController',
 			$scope.orderType = 'order';
 
 			$scope.removeFromPokedex = function(id){
-				if ($scope.pkType !== 'all') {
-					var pokemons = [];
-					for (var i = 0; i < $scope.pokemons.length; i++){
-						if ($scope.pokemons[i]._id != id) {
-							pokemons.push($scope.pokemons[i]);
-						}
+				for (var i = 0; i < $scope.pokemons.length; i++) {
+					if ($scope.pokemons[i]._id == id) {
+						$scope.pokemons[i].deleted = true;
 					}
-					$scope.pokemons = pokemons;
 				}
 			};
 
@@ -61,7 +56,8 @@ angular.module('appPokedex').controller('pkApiController',
 						_id: pokemon._id,
 						name: pokemon.name,
 						image: pokemon.image,
-						types: pokemon.types
+						types: pokemon.types,
+						deleted: false
 				});
 			};
 
