@@ -14,8 +14,8 @@
 </div>
 <div ng-repeat="pokemon in pokemons | filter:searchEntry | filter:{deleted:false} | orderBy:orderType">
   <div class="pokemon-actions" ng-show="showActions" ng-swipe-left="showActions = false">
-    <button class="btn btn-default btn-lg" ng-class="{'btn-warning': battleBox[pokemon._id]}" ng-click="setOnBattleBox(pokemon._id)">Battle Box</button>
-    <button class="btn btn-default btn-lg" ng-class="{'btn-pk-caught': caughts[pokemon._id]}" ng-click="caughtPokemon(pokemon._id)">Caught</button>
+    <button class="btn btn-default btn-lg" ng-class="{'btn-warning':onBattleBox(pokemon._id)}" ng-click="setOnBattleBox(pokemon._id)">Battle Box</button>
+    <button class="btn btn-default btn-lg" ng-class="{'btn-pk-caught':onCaughtList(pokemon._id)}" ng-click="setOnCaughtList(pokemon._id)">Caught</button>
   </div>
   <div class="media pokemon" ng-show="(!showActions)" ng-swipe-right="showActions = true">
     <a ng-click="showInfo(pokemon._id)">
@@ -36,8 +36,8 @@
               <!-- TODO: create a filter with this funcion -->
               <span>#{{("000" + pokemon._id).slice(-3)}}</span>
               <div>
-                <span class="star-icon" ng-class="{active:(battleBox[pokemon._id])}"></span>
-                <span class="battle-box-icon" ng-class="{active:(caughts[pokemon._id])}"></span>
+                <span class="star-icon" ng-class="{active:onBattleBox(pokemon._id)}"></span>
+                <span class="battle-box-icon" ng-class="{active:onCaughtList(pokemon._id)}"></span>
               </div>
             </div>
           </div>
@@ -73,8 +73,8 @@
  							<h2>#{{("000" + selPokemon._id).slice(-3)}} <span id="selected-pokemon-name">{{selPokemon.name}}</span></h2>
  						</div>
  						<div class="col-xs-4 icons">
-              <span ng-click="setOnBattleBox(selPokemon._id)" class="star-icon" ng-class="{active:(battleBox[selPokemon._id])}"></span>
-              <span ng-click="caughtPokemon(selPokemon._id)" class="battle-box-icon" ng-class="{active:(caughts[selPokemon._id])}"></span>
+              <span ng-click="setOnBattleBox(selPokemon._id)" class="star-icon" ng-class="{active:onBattleBox(selPokemon._id)}"></span>
+              <span ng-click="setOnCaughtList(selPokemon._id)" class="battle-box-icon" ng-class="{active:onCaughtList(selPokemon._id)}"></span>
  						</div>
  					</div>
  				</div>
