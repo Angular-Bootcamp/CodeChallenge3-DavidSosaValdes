@@ -1,8 +1,8 @@
 var screenshot = require('../helpers/screenshot.js');
 
 describe('I am on caught page, next i open the main menu and select the "ALL POKEMON" menu', function() {
-  browser.get('/#/caught');
   describe('I open the main menu', function(){
+    browser.get('/#/caught');
     var menuButton = element(by.css('.navbar-toggle'));
     menuButton.click();
     browser.waitForAngular();
@@ -46,6 +46,7 @@ describe('I am on caught page, next i open the main menu and select the "ALL POK
       });
 
       it('Should be sorted by descending Pokémon number', function(){
+        browser.get('/#/all');
         var orderAction = element(by.css('img.reorder-list'));
         orderAction.click();
         browser.waitForAngular();
