@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appPokedex">
+	<head>
+	    <meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/appPokedex.min.css">
+	</head>
+	<body>
+		<pk-framework title="Pokedex">
+			<pk-menu>
+				<pk-menu-item label="All pokemon" route="#/all"></pk-menu-item>
+				<pk-menu-item label="Caught pokemon" route="#/caught"></pk-menu-item>
+				<pk-menu-item label="Battle box" route="#/battle-box"></pk-menu-item>
+			</pk-menu>
+		</pk-framework>
+		<!-- Javascripts -->
+		<script type="text/javascript" src="./js/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/angular.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/angular-route.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/angular-touch.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/angular-animate.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/pouchdb.min.js"></script>
+		<script type="text/javascript" src="./js/plugins/angular-pouchdb.js"></script>
+		<script type="text/javascript" src="./js/plugins/ng-webworker.min.js"></script>
+		<!-- Pokedex Modules -->
+		<script type="text/javascript" src="./js/modules/pkMenu/pkMenuModule.js"></script>
+		<script type="text/javascript" src="./js/modules/pkMenu/pkMenuController.js"></script>
+		<script type="text/javascript" src="./js/modules/pkMenu/pkMenuDirective.js"></script>
+		<script type="text/javascript" src="./js/modules/pkMenu/pkMenuItemDirective.js"></script>
+		<script type="text/javascript" src="./js/modules/pkFramework/pkFrameworkModule.js"></script>
+		<script type="text/javascript" src="./js/modules/pkFramework/pkFrameworkController.js"></script>
+		<script type="text/javascript" src="./js/modules/pkFramework/pkFrameworkDirective.js"></script>
+		<!-- Pokedex App -->
+		<script type="text/javascript" src="./js/appPokedex.js"></script>
+		<!-- Pokedex Controllers -->
+		<script type="text/javascript" src="./js/controllers/pkApiController.js"></script>
+		<!-- Pokedex Factories -->
+		<script type="text/javascript" src="./js/factories/pkApiFactory.js"></script>
+		<script type="text/javascript" src="./js/factories/pkCaughtFactory.js"></script>
+		<script type="text/javascript" src="./js/factories/pkBattleBoxFactory.js"></script>
+		<!-- Pokedex Directives -->
+		<script type="text/javascript" src="./js/directives/pkBattleBoxList.js"></script>
+		<script type="text/javascript" src="./js/directives/pkCaughtList.js"></script>
+		<script type="text/javascript" src="./js/directives/pkList.js"></script>
+	</body>
+</html>

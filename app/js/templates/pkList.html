@@ -1,0 +1,150 @@
+<div id="pokedex-list" class="container-fluid" ng-show="(!showPokemon)">
+<div class="row pokedex-form-bar">
+  <div class="col-xs-11">
+    <div class="input-group">
+      <span id="basic-addon1" class="input-group-addon pokedex-search">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </span>
+      <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchEntry">
+    </div>
+  </div>
+  <div class="col-xs-1 pokemon-order-action" ng-class="{active: (orderType == '-order')}">
+    <img id="reorder-list" class="reorder-list" ng-click="orderList()" src="./img/filter-results-button.png">
+  </div>
+</div>
+<div ng-repeat="pokemon in pokemons | filter:searchEntry | filter:{deleted:false} | orderBy:orderType">
+  <div class="pokemon-actions" ng-show="showActions" ng-swipe-left="showActions = false">
+    <button class="btn btn-default btn-lg" ng-class="{'btn-warning': battleBox[pokemon._id]}" ng-click="setOnBattleBox(pokemon._id)">Battle Box</button>
+    <button class="btn btn-default btn-lg" ng-class="{'btn-pk-caught': caughts[pokemon._id]}" ng-click="caughtPokemon(pokemon._id)">Caught</button>
+  </div>
+  <div class="media pokemon" ng-show="(!showActions)" ng-swipe-right="showActions = true">
+    <a ng-click="showInfo(pokemon._id)">
+      <div class="media-left">
+        <img class="media-object" ng-src="{{pokemon.image}}">
+      </div>
+      <div class="media-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="row">
+            <div class="col-xs-8">
+              <h4 class="media-heading">{{pokemon.name}}</h4>
+              <div class="pokemon-types">
+                <span ng-repeat="type in pokemon.types" class="pokemon-type {{type.type.name}}"></span>
+              </div>
+            </div>
+            <div class="col-xs-4 text-right">
+              <!-- TODO: create a filter with this funcion -->
+              <span>#{{("000" + pokemon._id).slice(-3)}}</span>
+              <div>
+                <span class="star-icon" ng-class="{active:(battleBox[pokemon._id])}"></span>
+                <span class="battle-box-icon" ng-class="{active:(caughts[pokemon._id])}"></span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+</div>
+<div ng-show="(showPokemon)">
+  <nav class="navbar navbar-pokedex description">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" ng-click="hideInfo()">
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+        <h2 class="navbar-text">{{'Description'|uppercase}}</h2>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+  <!-- TODO: make a directive okInfo -->
+<div class="row">
+ 		<section class="container-fluid pokedex-entry">
+ 			<header class="row vertical-align">
+ 				<div class="pokemon-image col-xs-4">
+ 					<img class="img-responsive" alt="selPokemon.name" data-ng-src="{{selPokemon.image}}">
+ 				</div>
+ 				<div class="pokemon-name col-xs-8">
+ 					<div class="row vertical-align">
+ 						<div class="col-xs-8">
+ 							<h2>#{{("000" + selPokemon._id).slice(-3)}} <span id="selected-pokemon-name">{{selPokemon.name}}</span></h2>
+ 						</div>
+ 						<div class="col-xs-4 icons">
+              <span ng-click="setOnBattleBox(selPokemon._id)" class="star-icon" ng-class="{active:(battleBox[selPokemon._id])}"></span>
+              <span ng-click="caughtPokemon(selPokemon._id)" class="battle-box-icon" ng-class="{active:(caughts[selPokemon._id])}"></span>
+ 						</div>
+ 					</div>
+ 				</div>
+ 			</header>
+ 			<div class="row">
+ 				<div class="pokemon-info col-xs-8 col-xs-offset-4">
+ 					<ul class="list-inline">
+ 						<li><h3>{{selPokemon.height/10}} m</h3></li>
+ 						<li><h3>{{selPokemon.weight/10}} kg</h3></li>
+ 					</ul>
+ 					<p>{{selPokemon.description}}</p>
+ 					<div class="pokemon-types">
+ 						<span ng-repeat="type in selPokemon.types" class="pokemon-type {{type.type.name}}"></span>
+ 					</div>
+ 				</div>
+ 			</div>
+ 			<div class="row">
+ 				<div class="panel panel-default">
+ 					<div class="panel-heading">General information</div>
+ 					<div class="table-responsive">
+ 						<table class="table">
+ 							<tbody>
+ 								<tr>
+ 									<td>Hidden Abilities</td>
+ 									<td>
+ 										<ul class="list-inline">
+ 											<li ng-repeat="ability in selPokemon.abilities">{{ability.ability.name}}</li>
+ 										</ul>
+ 									</td>
+ 								</tr>
+ 								<tr>
+ 									<td>Location</td>
+ 									<td>
+ 										<span ng-if="!!selPokemon.locations">
+ 											Starter pokemon on <b>{{selPokemon.region}} Region</b>
+ 										</span>
+                    <!-- toDO: iterate over location_area_enconters if not empty-->
+                    <span ng-repeat="location in selPokemon.locations">
+                      {{location.location_area.name}}
+                    </span>
+ 									</td>
+ 								</tr>
+ 							</tbody>
+ 						</table>
+ 					</div>
+ 				</div>
+ 			</div>
+ 			<div class="row">
+ 				<div class="panel panel-default">
+ 					<div class="panel-heading">Evolutions</div>
+ 					<div class="table-responsive">
+ 						<table class="table evolution-table">
+ 							<tr ng-repeat="evolution in selPokemon.evolutions" ng-click="showInfo(evolution._id)">
+ 								<td class="col-xs-4">
+ 									<img class="img-responsive" alt="{{selPokemon.name}}" data-ng-src="{{evolution.image}}">
+ 								</td>
+ 								<td class="pokemon-evolution col-xs-8">
+ 									<span class="pokemon-number">#{{("000" + evolution._id).slice(-3)}}</span>
+ 									<h4>{{evolution.name}}</h4>
+ 									<p>LV. {{evolution.minLevel}}</p>
+ 									<div class="pokemon-types">
+ 										<span ng-repeat="type in evolution.types" class="pokemon-type {{type.name}}"></span>
+ 									</div>
+ 								</td>
+ 							</tr>
+ 						</table>
+ 					</div>
+ 				</div>
+ 			</div>
+ 		</section>
+</div>
+</div>
+</div>

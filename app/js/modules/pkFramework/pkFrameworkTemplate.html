@@ -1,0 +1,19 @@
+<nav class="navbar navbar-pokedex navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#pkMainBar" aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<h1 class="nabvar-text pokedex-title">{{title|uppercase}}</h1>
+		</div>
+		<div class="collapse navbar-collapse" id="pkMainBar">
+			<div ng-transclude></div>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row pokedex-container" ng-view></div>
+</div>
