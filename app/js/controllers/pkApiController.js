@@ -11,11 +11,13 @@ angular.module('appPokedex').controller('pkApiController',
 			$scope.selPokemon = {};
 			$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 			$scope.orderType = 'order';
+			$scope.pkRemoveOnListMode = false;
+			$scope.history = [];
 
 			$scope.removeFromPokedex = function(id){
 				for (var i = 0; i < $scope.pokemons.length; i++) {
 					if ($scope.pokemons[i]._id == id) {
-						$scope.pokemons[i].deleted = true;
+						$scope.pokemons[i].deleted = $scope.pkRemoveOnListMode;
 					}
 				}
 			};
@@ -74,6 +76,7 @@ angular.module('appPokedex').controller('pkApiController',
 			};
 
 			$scope.pkCaughtListInit = function(){
+				$scope.pkRemoveOnListMode = true;
 				return pkCaughtFactory.getAll().then(function(result){
 					for (var i = 0; i < result.rows.length; i++) {
 						pkCaughtFactory.get(result.rows[i].id).then($scope.pkListPushPokemon);
@@ -84,6 +87,7 @@ angular.module('appPokedex').controller('pkApiController',
 			};
 
 			$scope.pkBattleBoxListInit = function(){
+				$scope.pkRemoveOnListMode = true;
 				return pkBattleBoxFactory.getAll().then(function(result){
 					for (var i = 0; i < result.rows.length; i++) {
 						pkBattleBoxFactory.get(result.rows[i].id).then($scope.pkListPushPokemon);
@@ -108,10 +112,15 @@ angular.module('appPokedex').controller('pkApiController',
 
 			$scope.showInfo = function(id){
 				$scope.showPokemon = true;
+				$scope.history.push($scope.selPokemon._id);
 				return $scope.pkGet(id);
 			};
 
 			$scope.hideInfo = function(){
+				var historyPkID = $scope.history.pop();
+				if (historyPkID) {
+					return $scope.pkGet(historyPkID);
+				}
 				$scope.showPokemon = false;
 				$scope.selPokemon = {};
 			};
