@@ -7,7 +7,8 @@ exports.config = {
   ],
   suites: {
       story1: './UserStory1/*.spec.js',
-      story2: './UserStory2/*.spec.js'
+      story2: './UserStory2/*.spec.js',
+      story3: './UserStory3/*.spec.js'
   },
   capabilities: {
     'browserName': 'chrome',
