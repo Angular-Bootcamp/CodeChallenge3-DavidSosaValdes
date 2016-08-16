@@ -1,7 +1,7 @@
 var screenshot = require('../helpers/screenshot.js');
 
-describe('I am on the main page of pokedex', function(){
-  it('each entry will display the pokemons image thumbnail, name, number and type ', function(){
+describe('I am on "All POKEMON" page', function(){
+  it('Each entry should display the pokémon image thumbnail, name, number and type ', function(){
     browser.get('/#/all');
     var pkRow = element(by.repeater('pokemon in pokemons').row(0));
     var pkImage = pkRow.element(by.tagName('img'));
@@ -18,7 +18,16 @@ describe('I am on the main page of pokedex', function(){
     });
   });
 
-  it('Should be sorted by descending Pokémon number', function(){
+  it('The list should be sorted by ascending Pokémon number', function(){
+    browser.get('/#/all');
+    var orderType = element(by.css('.pokemon-order-action'));
+    expect(orderType.getAttribute('class')).not.toContain('active');
+    browser.takeScreenshot().then(function (png) {
+      screenshot.write(png, './UserStory2/screenshots/pokemonsAscOrder.png');
+    });
+  });
+
+  it('The list should be sorted by descending Pokémon number', function(){
     browser.get('/#/all');
     var orderAction = element(by.css('img.reorder-list'));
     orderAction.click();
@@ -28,15 +37,6 @@ describe('I am on the main page of pokedex', function(){
     expect(pkName.getText()).toMatch('mewtwo');
     browser.takeScreenshot().then(function (png) {
       screenshot.write(png, './UserStory2/screenshots/descendingOrderPokedex.png');
-    });
-  });
-
-  it('The list should be ordered by ascending Pokémon number', function(){
-    browser.get('/#/all');
-    var orderType = element(by.css('.pokemon-order-action'));
-    expect(orderType.getAttribute('class')).not.toContain('active');
-    browser.takeScreenshot().then(function (png) {
-      screenshot.write(png, './UserStory2/screenshots/pokemonsAscOrder.png');
     });
   });
 });
