@@ -2,10 +2,10 @@
 
 angular.module('appPokedex').directive('pkBattleboxList', [function(){
 	return {
-		controller: 'pkApiController',
+		controller: 'pkDirectiveController',
 		templateUrl: 'js/templates/pkList.html',
 		link: function(scope, el, attr, ctrl){
-			scope.pkRemoveOnListMode = true;
+			scope.removeFromListMode = true;
 			var factory = scope.getFactory('battle-box');
 			factory.getAll().then(function(result){
 				for (var i = 0; i < result.rows.length; i++) {

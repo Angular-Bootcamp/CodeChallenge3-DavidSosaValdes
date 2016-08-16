@@ -2,7 +2,7 @@
 
 angular.module('appPokedex').directive('pkList', [function(){
 	return {
-		controller: 'pkApiController',
+		controller: 'pkDirectiveController',
 		templateUrl: 'js/templates/pkList.html',
 		link: function(scope, el, attr, ctrl){
 			var factory = scope.getFactory();
