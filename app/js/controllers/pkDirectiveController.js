@@ -11,6 +11,7 @@ angular.module('appPokedex').controller('pkDirectiveController',
       $scope.showActions = false;
 			$scope.showPokemon = false;
       $scope.removeFromListMode = false;
+      $scope.enableLogs = false;
       $scope.selPokemon = {};
 			$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 			$scope.orderType = 'order';
@@ -63,7 +64,7 @@ angular.module('appPokedex').controller('pkDirectiveController',
 					database.delete(pokemon).then(function(){
 						delete list[id];
 						$scope.removeFromPokedex(id);
-            $log.info('delete pokemon: '+ id + ' from the '+ type +' list!');
+            ($scope.enableLogs) && $log.info('delete pokemon: '+ id + ' from the '+ type +' list!');
 					});
 				});
 			};
@@ -72,7 +73,7 @@ angular.module('appPokedex').controller('pkDirectiveController',
 				var [database, list] = $scope.getLocalStorageAttrs(type);
 				return database.get(id).then(function(){
 					list[id] = true;
-          $log.info('set pokemon: '+ id + ' on ' + type + ' list!');
+          ($scope.enableLogs) && $log.info('set pokemon: '+ id + ' on ' + type + ' list!');
 				});
 			};
 
@@ -104,7 +105,7 @@ angular.module('appPokedex').controller('pkDirectiveController',
 				return pkApiFactory.get(id).success(function(data){
 					$scope.selPokemon = data;
 				}).error(function(err){
-					$log.error('error getting pokemon: '+id);
+					($scope.enableLogs) && $log.error('error getting pokemon: '+id);
 				});
 			};
 
