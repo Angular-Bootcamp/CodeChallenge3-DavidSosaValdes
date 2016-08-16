@@ -15,6 +15,7 @@ angular.module('appPokedex').controller('pkDirectiveController',
       $scope.selPokemon = {};
 			$scope.searchEntry = ''; //important: if declared null the filter on main list won't show
 			$scope.orderType = 'order';
+			$scope.starters = ['1','4','6'];
 
 			$scope.getFactory = function(type){
 				if (type == 'caught') {
@@ -103,6 +104,7 @@ angular.module('appPokedex').controller('pkDirectiveController',
 
 			$scope.getPokemon = function(id){
 				return pkApiFactory.get(id).success(function(data){
+					data.starter = ($scope.starters.indexOf(data._id) !== -1);
 					$scope.selPokemon = data;
 				}).error(function(err){
 					($scope.enableLogs) && $log.error('error getting pokemon: '+id);

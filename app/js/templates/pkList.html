@@ -56,7 +56,6 @@
       </div>
    </nav>
    <div class="container-fluid">
-      <!-- TODO: make a directive pkInfo -->
       <div class="row">
          <section class="container-fluid pokedex-entry">
             <header class="row vertical-align">
@@ -66,7 +65,7 @@
                <div class="pokemon-name col-xs-8">
                   <div class="row vertical-align">
                      <div class="col-xs-8">
-                        <h2>#{{("000" + selPokemon._id).slice(-3)}} <span id="selected-pokemon-name">{{selPokemon.name}}</span></h2>
+                        <h2>#{{("000" + selPokemon._id).slice(-3)}} {{selPokemon.name}}</h2>
                      </div>
                      <div class="col-xs-4 icons">
                         <span ng-click="setOnBattleBox(selPokemon._id)" class="star-icon" ng-class="{active:onBattleBox(selPokemon._id)}"></span>
@@ -107,13 +106,14 @@
                            </tr>
                            <tr>
                               <td>Location</td>
-                              <td>
-                                 <span ng-if="!!selPokemon.locations">
-                                 Starter pokemon on <b>{{selPokemon.region}} Region</b>
-                                 </span>
-                                 <span ng-repeat="location in selPokemon.locations">
-                                 {{location.location_area.name}}
-                                 </span>
+                              <td class="pokemon-location">
+                                <span ng-show="(selPokemon.starter)">Starter pokemon on <b>Kanto Region</b></span>
+                                <span ng-hide="(selPokemon.locations.length)">
+                                  <b ng-show="(!selPokemon.starter)">None</b>
+                                </span>
+                                <span ng-repeat="location in selPokemon.locations">
+                                  {{location.location_area.name}}
+                                </span>
                               </td>
                            </tr>
                         </tbody>
@@ -121,7 +121,7 @@
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="(selPokemon.evolutions.length)">
                <div class="panel panel-default">
                   <div class="panel-heading">Evolutions</div>
                   <div class="table-responsive">
