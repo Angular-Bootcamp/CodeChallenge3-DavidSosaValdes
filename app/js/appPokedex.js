@@ -3,7 +3,7 @@
 angular.module('appPokedex', ['ngRoute','ngTouch','ngAnimate','pouchdb','pkFramework'])
   .config(['$routeProvider', function($routeProvider){
     $routeProvider
-      .when('/all',{
+      .when('/all', {
         template:'<pk-list></pk-list>'
       })
       .when('/caught', {
