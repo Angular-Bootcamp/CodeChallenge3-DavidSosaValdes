@@ -17,6 +17,63 @@ angular.module('appPokedex').controller('pkDirectiveController',
 			$scope.orderType = 'order';
 			$scope.starters = ['1','4','6'];
 
+			var getLocalStorageAttrs = function(type){
+				switch (type) {
+					case 'battle-box':
+						return [pkBattleBoxFactory, $scope.battleBox];
+					case 'caught':
+						return [pkCaughtFactory, $scope.caughts];
+				}
+			};
+
+			var removeFromPokedex = function(id){
+				for (var i = 0; i < $scope.pokemons.length; i++) {
+					if ($scope.pokemons[i]._id == id) {
+						$scope.pokemons[i].deleted = $scope.removeFromListMode;
+					}
+				}
+			};
+
+			var removeFromLocalStorage = function(type, id){
+				var [database, list] = getLocalStorageAttrs(type);
+				return database.get(id).then(function(pokemon){
+					database.delete(pokemon).then(function(){
+						delete list[id];
+						removeFromPokedex(id);
+						($scope.enableLogs) && $log.info('delete pokemon: '+ id + ' from the '+ type +' list!');
+					});
+				});
+			};
+
+			var insertOnLocalStorage = function(type, id){
+				var [database, list] = getLocalStorageAttrs(type);
+				return pkApiFactory.get(id).success(function(pokemon){
+					database.get(pokemon._id)
+						.then(function(doc){
+							// TODO: fix the update DB method because it duplicates entries
+							// 	pokemon._rev = doc._rev;
+							// 	pkCaughtFactory.put(pokemon, doc._rev).then(function(response){
+							// 		$log.info('update caught pokemon: '+ id + '!');
+							// 	});
+							removeFromLocalStorage(type, pokemon._id);
+						})
+						.catch(function(err){
+							delete pokemon._rev;
+							database.put(pokemon).then(function(){
+									$scope.insertOnLocalList(type, pokemon._id);
+							});
+						});
+				});
+			};
+
+			var insertOnLocalList = function(type, id){
+				var [database, list] = getLocalStorageAttrs(type);
+				return database.get(id).then(function(){
+					list[id] = true;
+          ($scope.enableLogs) && $log.info('set pokemon: '+ id + ' on ' + type + ' list!');
+				});
+			};
+
 			$scope.getFactory = function(type){
 				if (type == 'caught') {
 					return pkCaughtFactory;
@@ -29,66 +86,9 @@ angular.module('appPokedex').controller('pkDirectiveController',
 				}
 			};
 
-			$scope.getLocalStorageAttrs = function(type){
-				switch (type) {
-					case 'battle-box':
-						return [pkBattleBoxFactory, $scope.battleBox];
-					case 'caught':
-						return [pkCaughtFactory, $scope.caughts];
-				}
-			};
-
-			$scope.insertOnLocalStorage = function(type, id){
-				var [database, list] = $scope.getLocalStorageAttrs(type);
-				return pkApiFactory.get(id).success(function(pokemon){
-					database.get(pokemon._id)
-						.then(function(doc){
-							// TODO: fix the update DB method because it duplicates entries
-							// 	pokemon._rev = doc._rev;
-							// 	pkCaughtFactory.put(pokemon, doc._rev).then(function(response){
-							// 		$log.info('update caught pokemon: '+ id + '!');
-							// 	});
-              $scope.removeFromLocalStorage(type, pokemon._id);
-						})
-						.catch(function(err){
-							delete pokemon._rev;
-							database.put(pokemon).then(function(){
-									$scope.insertOnLocalList(type, pokemon._id);
-							});
-						});
-				});
-			};
-
-			$scope.removeFromLocalStorage = function(type, id){
-				var [database, list] = $scope.getLocalStorageAttrs(type);
-				return database.get(id).then(function(pokemon){
-					database.delete(pokemon).then(function(){
-						delete list[id];
-						$scope.removeFromPokedex(id);
-            ($scope.enableLogs) && $log.info('delete pokemon: '+ id + ' from the '+ type +' list!');
-					});
-				});
-			};
-
-			$scope.insertOnLocalList = function(type, id){
-				var [database, list] = $scope.getLocalStorageAttrs(type);
-				return database.get(id).then(function(){
-					list[id] = true;
-          ($scope.enableLogs) && $log.info('set pokemon: '+ id + ' on ' + type + ' list!');
-				});
-			};
-
 			$scope.updateLocalLists = function(id){
-				$scope.insertOnLocalList('caught', id);
-				$scope.insertOnLocalList('battle-box', id);
-			};
-
-			$scope.removeFromPokedex = function(id){
-				for (var i = 0; i < $scope.pokemons.length; i++) {
-					if ($scope.pokemons[i]._id == id) {
-						$scope.pokemons[i].deleted = $scope.removeFromListMode;
-					}
-				}
+				insertOnLocalList('caught', id);
+				insertOnLocalList('battle-box', id);
 			};
 
 			$scope.insertPokemon = function(pokemon){
@@ -140,11 +140,11 @@ angular.module('appPokedex').controller('pkDirectiveController',
 			};
 
 			$scope.setOnBattleBox = function(id){
-				return $scope.insertOnLocalStorage('battle-box', id);
+				return insertOnLocalStorage('battle-box', id);
 			};
 
 			$scope.setOnCaughtList = function(id){
-				return $scope.insertOnLocalStorage('caught', id);
+				return insertOnLocalStorage('caught', id);
 			};
 		}]
 	);
