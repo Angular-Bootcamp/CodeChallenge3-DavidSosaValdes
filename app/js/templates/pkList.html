@@ -48,7 +48,7 @@
    <nav class="navbar navbar-pokedex description">
       <div class="container-fluid">
          <div class="navbar-header">
-            <a class="navbar-brand" ng-click="hideInfo()">
+            <a id="return-action" class="navbar-brand" ng-click="hideInfo()">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </a>
             <h2 class="navbar-text">{{'Description'|uppercase}}</h2>
@@ -121,10 +121,11 @@
                   </div>
                </div>
             </div>
-            <div class="row" ng-show="(selPokemon.evolutions.length)">
+            <div class="row pokemon-evolutions">
                <div class="panel panel-default">
                   <div class="panel-heading">Evolutions</div>
-                  <div class="table-responsive">
+                  <p ng-hide="(selPokemon.evolutions.length)">This Pokémon is not part of an evolutionary line.</p>
+                  <div class="table-responsive" ng-show="(selPokemon.evolutions.length)">
                      <table class="table evolution-table">
                         <tr ng-repeat="evolution in selPokemon.evolutions" ng-click="showInfo(evolution._id)">
                            <td class="col-xs-4">
