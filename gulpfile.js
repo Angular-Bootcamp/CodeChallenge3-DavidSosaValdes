@@ -1,6 +1,32 @@
 var gulp = require('gulp');
 var less = require('gulp-less');
 var concat = require('gulp-concat');
+var gulpDocs = require('gulp-ngdocs');
+var connect = require('gulp-connect');
+
+gulp.task('connect_ngdocs', ['ngdocs'] ,function() {
+  connect.server({
+    root: 'docs',
+    livereload: false,
+    fallback: 'docs/index.html',
+    port: 8083
+  });
+});
+
+gulp.task('ngdocs', [], function () {
+  var options = {
+    scripts: ['./app/js/appPokedex.js'],
+    html5Mode: true,
+    title: "Pokedex",
+    //image: "path/to/my/image.png",
+    //imageLink: "http://my-domain.com",
+  }
+  return gulp.src([
+    'app/js/factories/*.js'
+  ])
+    .pipe(gulpDocs.process(options))
+    .pipe(gulp.dest('./docs'));
+});
 
 // Less Task
 gulp.task('less', function () {
