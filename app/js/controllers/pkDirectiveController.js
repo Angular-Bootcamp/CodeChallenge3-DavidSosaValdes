@@ -45,6 +45,14 @@ angular.module('appPokedex').controller('pkDirectiveController',
 				});
 			};
 
+			var insertOnLocalList = function(type, id){
+				var [database, list] = getLocalStorageAttrs(type);
+				return database.get(id).then(function(){
+					list[id] = true;
+					($scope.enableLogs) && $log.info('set pokemon: '+ id + ' on ' + type + ' list!');
+				});
+			};
+
 			var insertOnLocalStorage = function(type, id){
 				var [database, list] = getLocalStorageAttrs(type);
 				return pkApiFactory.get(id).success(function(pokemon){
@@ -60,17 +68,9 @@ angular.module('appPokedex').controller('pkDirectiveController',
 						.catch(function(err){
 							delete pokemon._rev;
 							database.put(pokemon).then(function(){
-									$scope.insertOnLocalList(type, pokemon._id);
+									insertOnLocalList(type, pokemon._id);
 							});
 						});
-				});
-			};
-
-			var insertOnLocalList = function(type, id){
-				var [database, list] = getLocalStorageAttrs(type);
-				return database.get(id).then(function(){
-					list[id] = true;
-          ($scope.enableLogs) && $log.info('set pokemon: '+ id + ' on ' + type + ' list!');
 				});
 			};
 
