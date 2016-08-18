@@ -1,11 +1,21 @@
 'use strict';
 
+/**
+ * @ngdoc service
+ * @name appPokedex.factory:pkApiFactory
+ * @function
 
+ * @description
+ *  Query the pokemons from a local server (CouchDB).
+ */
 angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
+  /** @global */
   var API_URL = 'http://pokeapi.co';
+  /** @global */
   var DATABASE_URL = 'http://127.0.0.1:5984/pokedex';
-  // Convert an image on base64 to store as a string on database
+  /** @function convertImage */
   var convertImage = function(url, callback){
+    //Convert an image on base64 to store as a string on database
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
     xhr.onload = function() {
@@ -19,12 +29,39 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
     xhr.send();
   };
   return {
+    /**
+     * @ngdoc property
+     * @name get
+     * @propertyOf appPokedex.factory:pkApiFactory
+     * @description
+     *  Get a single doc using a pokemon ID as a param
+     * @param {string} id Pokemon ID
+     * @returns {Object} $http promise
+     */
     get: function(id){
       return $http.get((DATABASE_URL+'/'+id));
     },
-    getAll: function(callback){
+    /**
+     * @ngdoc property
+     * @name getAll
+     * @propertyOf appPokedex.factory:pkApiFactory
+     * @description
+     *  Get all docs stored on the DB (without information, only the ids)
+     * @returns {object} $http promise
+     */
+    getAll: function(){
       return $http.get((DATABASE_URL+'/_all_docs'));
     },
+    /**
+     * @ngdoc property
+     * @name populateDB
+     * @propertyOf appPokedex.factory:pkApiFactory
+     * @description
+     *  Populate local database from the pokeapi
+     * @param {integer} min min pokemon limit
+     * @param {integer} max max pokemon limit
+     * @returns {Object} pokedex an array of pokemons data
+     */
     populateDB: function(min, max){
       var json = [];
       for (var i = min; i <= max; i++){
@@ -47,6 +84,7 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
                 locations   : [],
                 description : ''
               };
+              // Get description
               $http.get(data.species.url).success(function(data){
                 pokemon.description = data.flavor_text_entries[1].flavor_text;
                 // Get location area encounters
@@ -75,7 +113,11 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
                           pokemon.evolutions = data;
                           json.push(pokemon);
                           $log.info('Success API request of pokemon: '+ pokemon.name);
-                          (json.length >= max) && $log.info(JSON.stringify(json));
+                          if (json.length >= max) {
+                            /* Here we can push to the server, instead we log the information for testing purposes */
+                            var output = JSON.stringify(json);
+                            $log.info(output);
+                          }
                         });
                       })
                       .error(function(response, status){
