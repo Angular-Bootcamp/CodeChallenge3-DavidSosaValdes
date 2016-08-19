@@ -15,15 +15,21 @@ gulp.task('connect_ngdocs', ['ngdocs'] ,function() {
 
 gulp.task('ngdocs', [], function () {
   var options = {
-    scripts: ['./app/js/appPokedex.js'],
+    scripts: [
+      './app/js/plugins/angular.min.js',
+      './app/js/plugins/pouchdb.min.js',
+      './app/js/plugins/angular-pouchdb.js'
+    ],
     html5Mode: true,
-    title: "Pokedex",
+    title: "Pokedex Docs",
     //image: "path/to/my/image.png",
     //imageLink: "http://my-domain.com",
   }
   return gulp.src([
     'app/js/factories/*.js',
     'app/js/controllers/*.js',
+    'app/js/directives/*.js',
+    'app/js/modules/**/*.js',
     'app/js/appPokedex.js'
   ])
     .pipe(gulpDocs.process(options))

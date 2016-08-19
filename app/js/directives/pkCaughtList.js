@@ -1,5 +1,14 @@
 'use strict';
 
+/**
+ * @ngdoc directive
+ * @name appPokedex.directive:pkCaughtList
+ * @element ANY
+ * @function
+ *
+ * @description Create a list of pokemons stored on the caught localStorage database.
+ * @example <pk-caught-list></pk-caught-list>
+ **/
 angular.module('appPokedex').directive('pkCaughtList', [function(){
 	return {
 		controller: 'pkDirectiveController',

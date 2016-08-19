@@ -1,5 +1,14 @@
 'use strict';
 
+/**
+ * @ngdoc directive
+ * @name appPokedex.directive:pkBattleboxList
+ * @element ANY
+ * @function
+ *
+ * @description Create a list of pokemons stored on the battle-box localStorage database.
+ * @example <pk-battlebox-list></pk-battlebox-list>
+ **/
 angular.module('appPokedex').directive('pkBattleboxList', [function(){
 	return {
 		controller: 'pkDirectiveController',
