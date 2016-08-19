@@ -3,10 +3,9 @@
 /**
  * @ngdoc service
  * @name appPokedex.factory:pkApiFactory
- * @function
-
- * @description
- *  Query the pokemons from a local server (CouchDB).
+ * @description Query the pokemons from a local server (CouchDB).
+ * @requires ng.$http
+ * @requires ng.$log
  */
 angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
   /** @global */
@@ -14,8 +13,18 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
   /** @global */
   var DATABASE_URL = 'http://127.0.0.1:5984/pokedex';
   /** @function convertImage */
+  /**
+   * @ngdoc function
+   * @name convertImage
+   * @methodOf appPokedex.factory:pkApiFactory
+   * @requires XMLHttpRequest
+   * @requires FileReader
+   * @description Convert an image on base64 to store as a string on database.
+   * @param {string} url Url image.
+   * @param {function} callback Function callback.
+   * @private
+   */
   var convertImage = function(url, callback){
-    //Convert an image on base64 to store as a string on database
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
     xhr.onload = function() {
@@ -30,34 +39,31 @@ angular.module('appPokedex').factory('pkApiFactory', function($http, $log){
   };
   return {
     /**
-     * @ngdoc property
+     * @ngdoc function
      * @name get
-     * @propertyOf appPokedex.factory:pkApiFactory
-     * @description
-     *  Get a single doc using a pokemon ID as a param
+     * @methodOf appPokedex.factory:pkApiFactory
+     * @description Get a single doc using a pokemon ID as a param
      * @param {string} id Pokemon ID
-     * @returns {Object} $http promise
+     * @returns {Object} GET $http promise
      */
     get: function(id){
       return $http.get((DATABASE_URL+'/'+id));
     },
     /**
-     * @ngdoc property
+     * @ngdoc function
      * @name getAll
-     * @propertyOf appPokedex.factory:pkApiFactory
-     * @description
-     *  Get all docs stored on the DB (without information, only the ids)
-     * @returns {object} $http promise
+     * @methodOf appPokedex.factory:pkApiFactory
+     * @description Get all docs stored on the DB (without information, only the ids)
+     * @returns {Object} GET $http promise
      */
     getAll: function(){
       return $http.get((DATABASE_URL+'/_all_docs'));
     },
     /**
-     * @ngdoc property
+     * @ngdoc function
      * @name populateDB
-     * @propertyOf appPokedex.factory:pkApiFactory
-     * @description
-     *  Populate local database from the pokeapi
+     * @methodOf appPokedex.factory:pkApiFactory
+     * @description Populate local database from the pokeapi
      * @param {integer} min min pokemon limit
      * @param {integer} max max pokemon limit
      * @returns {Object} pokedex an array of pokemons data

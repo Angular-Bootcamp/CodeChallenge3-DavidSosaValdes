@@ -22,7 +22,9 @@ gulp.task('ngdocs', [], function () {
     //imageLink: "http://my-domain.com",
   }
   return gulp.src([
-    'app/js/factories/*.js'
+    'app/js/factories/*.js',
+    'app/js/controllers/*.js',
+    'app/js/appPokedex.js'
   ])
     .pipe(gulpDocs.process(options))
     .pipe(gulp.dest('./docs'));

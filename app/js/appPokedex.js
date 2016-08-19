@@ -1,5 +1,16 @@
 'use strict';
 
+/**
+ * @ngdoc overview
+ * @name appPokedex
+ * @description
+ *  Pokedex Main Module
+ * @requires ngRoute
+ * @requires ngTouch
+ * @requires ngAnimate
+ * @requires pouchdb
+ * @requires pkFramework
+ */
 angular.module('appPokedex', ['ngRoute','ngTouch','ngAnimate','pouchdb','pkFramework'])
   .config(['$routeProvider', function($routeProvider){
     $routeProvider
