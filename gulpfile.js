@@ -4,7 +4,7 @@ var concat = require('gulp-concat');
 var gulpDocs = require('gulp-ngdocs');
 var connect = require('gulp-connect');
 
-gulp.task('connect_ngdocs', ['ngdocs'] ,function() {
+gulp.task('ngdocs_connect', ['ngdocs_generate'] ,function() {
   connect.server({
     root: 'docs',
     livereload: false,
@@ -13,7 +13,7 @@ gulp.task('connect_ngdocs', ['ngdocs'] ,function() {
   });
 });
 
-gulp.task('ngdocs', [], function () {
+gulp.task('ngdocs_generate', [], function () {
   var options = {
     scripts: [
       './app/js/plugins/angular.min.js',
