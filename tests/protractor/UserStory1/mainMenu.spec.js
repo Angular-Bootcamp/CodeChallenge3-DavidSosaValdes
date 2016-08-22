@@ -2,15 +2,19 @@ var screenshot = require('../helpers/screenshot.js');
 
 describe('I am on the main page', function() {
   describe('I tab on the menu in the header bar', function(){
-    browser.get('/#/all');
+    var mainPage = require('../pageObjects/pkMainPage.js');
+    var page = new mainPage();
+    page.get();
 
     it('Should expand and display 3 elements', function(){
-      var menuButton = element(by.css('.navbar-toggle'));
+      var menuButton = page.menu.button.get();
       menuButton.click();
       browser.waitForAngular();
 
-      var menuElements = element.all(by.css('pk-menu-item'));
-      expect(menuElements.count()).toBe(3);
+      var menuElements = page.menu.elements.get();
+      var countExpected = 3;
+      expect(menuElements.count()).toBe(countExpected);
+
       var menuElementsTextExpected = [
           'ALL POKEMON',
           'CAUGHT POKEMON',
@@ -25,11 +29,13 @@ describe('I am on the main page', function() {
     });
 
     it('Should collapse', function(){
-      var menuButton = element(by.css('.navbar-toggle'));
+      var menuButton = page.menu.button.get();
       menuButton.click();
       browser.waitForAngular();
 
-      expect(menuButton.getAttribute('class')).toContain('collapse');
+      var classExpected = 'collapse';
+      expect(menuButton.getAttribute('class')).toContain(classExpected);
+
       browser.takeScreenshot().then(function (png) {
         screenshot.write(png, './UserStory1/screenshots/collapsedMenu.png');
       });
