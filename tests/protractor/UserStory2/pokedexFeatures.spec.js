@@ -1,8 +1,12 @@
 var screenshot = require('../helpers/screenshot.js');
 
 describe('I am on "All POKEMON" page', function(){
-  it('Each entry should display the pokémon image thumbnail, name, number and type ', function(){
+
+  beforeEach(function(){
     browser.get('/#/all');
+  });
+
+  it('Each entry should display the pokémon image thumbnail, name, number and type ', function(){
     var pkRow = element(by.repeater('pokemon in pokemons').row(0));
     var pkImage = pkRow.element(by.tagName('img'));
     var pkName = pkRow.element(by.binding('pokemon.name'));
@@ -19,7 +23,6 @@ describe('I am on "All POKEMON" page', function(){
   });
 
   it('The list should be sorted by ascending Pokémon number', function(){
-    browser.get('/#/all');
     var orderType = element(by.css('.pokemon-order-action'));
     expect(orderType.getAttribute('class')).not.toContain('active');
     browser.takeScreenshot().then(function (png) {
@@ -28,7 +31,6 @@ describe('I am on "All POKEMON" page', function(){
   });
 
   it('The list should be sorted by descending Pokémon number', function(){
-    browser.get('/#/all');
     var orderAction = element(by.css('img.reorder-list'));
     orderAction.click();
     browser.waitForAngular();

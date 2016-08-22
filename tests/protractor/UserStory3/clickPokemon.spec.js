@@ -2,22 +2,16 @@ var screenshot = require('../helpers/screenshot.js');
 
 describe('I am on "ALL POKEMON" page', function(){
   describe('I select the first pokemon on the list', function() {
-    browser.get('/#/all');
+    describe('The pokedex shows the pokemon info', function(){
 
-    var firstPokemon = element.all(by.binding('name')).first();
-    firstPokemon.click();
-    browser.waitForAngular();
+      beforeEach(function(){
+        browser.get('/#/all');
 
-    it('Should hide the main list element', function(){
-      var pkList = element(by.id('pokedex-list'));
-
-      expect(pkList.getAttribute('class')).toContain('ng-hide');
-      browser.takeScreenshot().then(function(png){
-        screenshot.write(png, './UserStory3/screenshots/hidePokemonList.png');
+        var firstPokemon = element.all(by.binding('name')).first();
+        firstPokemon.click();
+        browser.waitForAngular();
       });
-    });
 
-    describe('Shows the pokemon info', function(){
       var expected = {
         name: 'bulbasaur',
         number: '001',
@@ -30,9 +24,22 @@ describe('I am on "ALL POKEMON" page', function(){
         location: 'Starter pokemon on Kanto Region'
       };
 
+      it('Should hide the main list element', function(){
+        var pkList = element(by.id('pokedex-list'));
+
+        expect(pkList.getAttribute('class')).toContain('ng-hide');
+        browser.takeScreenshot().then(function(png){
+          screenshot.write(png, './UserStory3/screenshots/hidePokemonList.png');
+        });
+      });
+
       it('Should see the pokemon name', function(){
         var pkName = element(by.binding('selPokemon.name'));
         expect(pkName.getText()).toMatch(expected.name);
+
+        browser.takeScreenshot().then(function(png){
+          screenshot.write(png, './UserStory3/screenshots/pokemonInfo.png');
+        });
       });
 
       it('Should see the pokemon number', function(){
@@ -73,10 +80,6 @@ describe('I am on "ALL POKEMON" page', function(){
       it('Should see the pokemon location', function(){
         var pkLocation = element(by.css('.pokemon-location'));
         expect(pkLocation.getText()).toMatch(expected.location);
-      });
-
-      browser.takeScreenshot().then(function(png){
-        screenshot.write(png, './UserStory3/screenshots/pokemonInfo.png');
       });
     });
   });

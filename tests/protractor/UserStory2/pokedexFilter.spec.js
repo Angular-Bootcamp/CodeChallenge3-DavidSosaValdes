@@ -1,7 +1,7 @@
 var screenshot = require('../helpers/screenshot.js');
 
 describe('I am on "ALL POKEMON" page', function(){
-  it('Should filter the pokemon named "dratini"', function(){
+  it('Should filter the pokemon named: "dratini"', function(){
     browser.get('/#/all');
 
     var search = element(by.model('searchEntry'));
